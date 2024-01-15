@@ -3,8 +3,6 @@
 
 #include "globals.h"
 
-class City;
-
 class History {
 public:
     History(int nRows, int nCols);
