@@ -14,7 +14,7 @@
 // above commented out and instead set TESTNUM that other way.)
 
 #ifndef TESTNUM  // In case you haven't already defined the name TESTNUM
-#define TESTNUM 1
+#define TESTNUM 0
 #endif
 
 #if TESTNUM == 1
