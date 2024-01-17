@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CA1723842B4E38E700021CBD /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA1723832B4E38E700021CBD /* main.cpp */; };
+		CA3C8E322B57647D00C44F18 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA3C8E312B57647D00C44F18 /* main.cpp */; };
 		CA9310B42B4F0AAD0076AFE3 /* utilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA9310A92B4F0AAD0076AFE3 /* utilities.cpp */; };
 		CA9310B52B4F0AAD0076AFE3 /* Tooter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA9310AA2B4F0AAD0076AFE3 /* Tooter.cpp */; };
 		CA9310B62B4F0AAD0076AFE3 /* History.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA9310AB2B4F0AAD0076AFE3 /* History.cpp */; };
@@ -30,19 +30,19 @@
 
 /* Begin PBXFileReference section */
 		CA1723802B4E38E700021CBD /* project_1 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = project_1; sourceTree = BUILT_PRODUCTS_DIR; };
-		CA1723832B4E38E700021CBD /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		CA9310A82B4F0AAD0076AFE3 /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
-		CA9310A92B4F0AAD0076AFE3 /* utilities.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = utilities.cpp; sourceTree = "<group>"; };
-		CA9310AA2B4F0AAD0076AFE3 /* Tooter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tooter.cpp; sourceTree = "<group>"; };
-		CA9310AB2B4F0AAD0076AFE3 /* History.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = History.cpp; sourceTree = "<group>"; };
-		CA9310AC2B4F0AAD0076AFE3 /* History.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = History.h; sourceTree = "<group>"; };
-		CA9310AD2B4F0AAD0076AFE3 /* City.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = City.cpp; sourceTree = "<group>"; };
-		CA9310AE2B4F0AAD0076AFE3 /* globals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = globals.h; sourceTree = "<group>"; };
-		CA9310AF2B4F0AAD0076AFE3 /* Game.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Game.cpp; sourceTree = "<group>"; };
-		CA9310B02B4F0AAD0076AFE3 /* City.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = City.h; sourceTree = "<group>"; };
-		CA9310B12B4F0AAD0076AFE3 /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Player.cpp; sourceTree = "<group>"; };
-		CA9310B22B4F0AAD0076AFE3 /* Tooter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tooter.h; sourceTree = "<group>"; };
-		CA9310B32B4F0AAD0076AFE3 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
+		CA3C8E312B57647D00C44F18 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = main.cpp; sourceTree = "<group>"; };
+		CA9310A82B4F0AAD0076AFE3 /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = Game.h; sourceTree = "<group>"; };
+		CA9310A92B4F0AAD0076AFE3 /* utilities.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = utilities.cpp; sourceTree = "<group>"; };
+		CA9310AA2B4F0AAD0076AFE3 /* Tooter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = Tooter.cpp; sourceTree = "<group>"; };
+		CA9310AB2B4F0AAD0076AFE3 /* History.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = History.cpp; sourceTree = "<group>"; };
+		CA9310AC2B4F0AAD0076AFE3 /* History.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = History.h; sourceTree = "<group>"; };
+		CA9310AD2B4F0AAD0076AFE3 /* City.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = City.cpp; sourceTree = "<group>"; };
+		CA9310AE2B4F0AAD0076AFE3 /* globals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = globals.h; sourceTree = "<group>"; };
+		CA9310AF2B4F0AAD0076AFE3 /* Game.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = Game.cpp; sourceTree = "<group>"; };
+		CA9310B02B4F0AAD0076AFE3 /* City.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = City.h; sourceTree = "<group>"; };
+		CA9310B12B4F0AAD0076AFE3 /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = Player.cpp; sourceTree = "<group>"; };
+		CA9310B22B4F0AAD0076AFE3 /* Tooter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = Tooter.h; sourceTree = "<group>"; };
+		CA9310B32B4F0AAD0076AFE3 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = Player.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,10 +75,10 @@
 		CA1723822B4E38E700021CBD /* project_1 */ = {
 			isa = PBXGroup;
 			children = (
-				CA1723832B4E38E700021CBD /* main.cpp */,
 				CA9310AD2B4F0AAD0076AFE3 /* City.cpp */,
 				CA9310B02B4F0AAD0076AFE3 /* City.h */,
 				CA9310AF2B4F0AAD0076AFE3 /* Game.cpp */,
+				CA3C8E312B57647D00C44F18 /* main.cpp */,
 				CA9310A82B4F0AAD0076AFE3 /* Game.h */,
 				CA9310AE2B4F0AAD0076AFE3 /* globals.h */,
 				CA9310AB2B4F0AAD0076AFE3 /* History.cpp */,
@@ -153,8 +153,8 @@
 				CA9310B92B4F0AAD0076AFE3 /* Player.cpp in Sources */,
 				CA9310B42B4F0AAD0076AFE3 /* utilities.cpp in Sources */,
 				CA9310B62B4F0AAD0076AFE3 /* History.cpp in Sources */,
+				CA3C8E322B57647D00C44F18 /* main.cpp in Sources */,
 				CA9310B82B4F0AAD0076AFE3 /* Game.cpp in Sources */,
-				CA1723842B4E38E700021CBD /* main.cpp in Sources */,
 				CA9310B72B4F0AAD0076AFE3 /* City.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
