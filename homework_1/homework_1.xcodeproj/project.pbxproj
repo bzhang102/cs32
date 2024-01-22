@@ -7,9 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CA3A381E2B5C8B30003B9D7A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA3A381D2B5C8B30003B9D7A /* main.cpp */; };
 		CA3A382B2B5C901F003B9D7A /* Map.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA3A382A2B5C901F003B9D7A /* Map.cpp */; };
 		CA3A382E2B5CB953003B9D7A /* GamerMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA3A382D2B5CB953003B9D7A /* GamerMap.cpp */; };
+		CA978FBE2B5D070100F324F8 /* newMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA978FBD2B5D070100F324F8 /* newMap.cpp */; };
+		CA978FC12B5DCC9800F324F8 /* testMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA978FC02B5DCC9800F324F8 /* testMap.cpp */; };
+		CA978FC32B5DCCA800F324F8 /* testnewMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA978FC22B5DCCA800F324F8 /* testnewMap.cpp */; };
+		CA978FC52B5DCD2000F324F8 /* testGamerMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA978FC42B5DCD2000F324F8 /* testGamerMap.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -26,11 +29,15 @@
 
 /* Begin PBXFileReference section */
 		CA3A381A2B5C8B30003B9D7A /* homework_1 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = homework_1; sourceTree = BUILT_PRODUCTS_DIR; };
-		CA3A381D2B5C8B30003B9D7A /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		CA3A38292B5C8C0C003B9D7A /* Map.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Map.h; sourceTree = "<group>"; };
 		CA3A382A2B5C901F003B9D7A /* Map.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Map.cpp; sourceTree = "<group>"; };
 		CA3A382D2B5CB953003B9D7A /* GamerMap.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GamerMap.cpp; sourceTree = "<group>"; };
 		CA3A382F2B5CB9D3003B9D7A /* GamerMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GamerMap.h; sourceTree = "<group>"; };
+		CA978FBD2B5D070100F324F8 /* newMap.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = newMap.cpp; sourceTree = "<group>"; };
+		CA978FBF2B5D070E00F324F8 /* newMap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = newMap.h; sourceTree = "<group>"; };
+		CA978FC02B5DCC9800F324F8 /* testMap.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = testMap.cpp; sourceTree = "<group>"; };
+		CA978FC22B5DCCA800F324F8 /* testnewMap.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = testnewMap.cpp; sourceTree = "<group>"; };
+		CA978FC42B5DCD2000F324F8 /* testGamerMap.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = testGamerMap.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,11 +70,15 @@
 		CA3A381C2B5C8B30003B9D7A /* homework_1 */ = {
 			isa = PBXGroup;
 			children = (
+				CA978FC22B5DCCA800F324F8 /* testnewMap.cpp */,
 				CA3A382F2B5CB9D3003B9D7A /* GamerMap.h */,
 				CA3A382D2B5CB953003B9D7A /* GamerMap.cpp */,
-				CA3A381D2B5C8B30003B9D7A /* main.cpp */,
+				CA978FC02B5DCC9800F324F8 /* testMap.cpp */,
 				CA3A38292B5C8C0C003B9D7A /* Map.h */,
 				CA3A382A2B5C901F003B9D7A /* Map.cpp */,
+				CA978FBD2B5D070100F324F8 /* newMap.cpp */,
+				CA978FBF2B5D070E00F324F8 /* newMap.h */,
+				CA978FC42B5DCD2000F324F8 /* testGamerMap.cpp */,
 			);
 			path = homework_1;
 			sourceTree = "<group>";
@@ -131,7 +142,10 @@
 			files = (
 				CA3A382B2B5C901F003B9D7A /* Map.cpp in Sources */,
 				CA3A382E2B5CB953003B9D7A /* GamerMap.cpp in Sources */,
-				CA3A381E2B5C8B30003B9D7A /* main.cpp in Sources */,
+				CA978FC12B5DCC9800F324F8 /* testMap.cpp in Sources */,
+				CA978FC32B5DCCA800F324F8 /* testnewMap.cpp in Sources */,
+				CA978FC52B5DCD2000F324F8 /* testGamerMap.cpp in Sources */,
+				CA978FBE2B5D070100F324F8 /* newMap.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

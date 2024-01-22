@@ -1,13 +1,48 @@
 #include <iostream>
 
-#include "Map.h"
+#include "newMap.h"
 
 using namespace std;
 
 Map::Map() {
     m_numItems = 0;
+    m_capacity = DEFAULT_MAX_SIZE;
+    m_items = new Item[m_capacity];
 }
 // Create an empty map (i.e., one whose size() is 0).
+
+Map::Map(int capacity) {
+    m_numItems = 0;
+    m_capacity = capacity;
+    m_items = new Item[m_capacity];
+}
+
+Map::Map(const Map& other) {
+    m_numItems = other.size();
+    m_capacity = other.m_capacity;
+    m_items = new Item[m_capacity];
+    for(int i = 0; i < m_numItems; i++) {
+        m_items[i] = other.m_items[i];
+    }
+}
+// Copy Constructor
+
+Map::~Map() {
+    delete [] m_items;
+}
+// Destructor
+
+Map& Map::operator=(const Map &other) {
+    delete [] m_items;
+    m_numItems = other.size();
+    m_capacity = other.m_capacity;
+    m_items = new Item[m_capacity];
+    for(int i = 0; i < m_numItems; i++) {
+        m_items[i] = other.m_items[i];
+    }
+    return *this;
+}
+// Assignment Operator
 
 bool Map::empty() const {
     return m_numItems == 0;
@@ -20,7 +55,7 @@ int Map::size() const {
 // Return the number of key/value pairs in the map.
 
 bool Map::insert(const KeyType& key, const ValueType& value) {
-    if(!contains(key) && m_numItems < DEFAULT_MAX_ITEMS) {
+    if(!contains(key) && m_numItems < m_capacity) {
         m_items[m_numItems].key = key;
         m_items[m_numItems].value = value;
         m_numItems++;
@@ -136,8 +171,8 @@ void Map::swap(Map& other) {
 }
 // Exchange the contents of this map with the other one.
 
-
 void Map::dump() const {
+    cerr << "Size: " << m_numItems << endl;
     for(int i = 0; i < m_numItems; i++) {
         cerr << m_items[i].key << ", " << m_items[i].value << endl;
     }

@@ -1,15 +1,20 @@
-#ifndef Map_h
-#define Map_h
+#ifndef newMap_h
+#define newMap_h
 
 #include <string>
 
-const int DEFAULT_MAX_ITEMS = 150;
+const int DEFAULT_MAX_SIZE = 150;
 using KeyType = std::string;
 using ValueType = double;
 
 class Map {
 public:
     Map();
+    Map(int size);
+    Map(const Map& other);
+    ~Map();
+    Map& operator=(const Map& other);
+
     bool empty() const;
     int size() const;
     bool insert(const KeyType& key, const ValueType& value);
@@ -26,7 +31,8 @@ private:
         KeyType key;
         ValueType value;
     };
-    Item m_items[DEFAULT_MAX_ITEMS];
+    Item* m_items;
     int m_numItems;
+    int m_capacity;
 };
 #endif

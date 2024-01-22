@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include "Map.h"
 #include "GamerMap.h"
 
 using namespace std;
@@ -47,9 +48,8 @@ void GamerMap::print() const {
     string name;
     double hours;
     for(int i = 0; i < numGamers(); i++) {
-        if(m_map.get(i, name, hours)) {
-            cout << name << " " << hours << endl;
-        }
+        m_map.get(i, name, hours);
+        cout << name << " " << hours << endl;
     }
 }
 // Write to cout one line for every person in the map.  Each line
