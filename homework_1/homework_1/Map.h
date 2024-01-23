@@ -20,7 +20,6 @@ public:
     bool get(const KeyType& key, ValueType& value) const;
     bool get(int i, KeyType& key, ValueType& value) const;
     void swap(Map& other);
-    void dump() const;
 private:
     struct Item {
         KeyType key;

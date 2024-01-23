@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "Map.h"
 
 using namespace std;
@@ -104,17 +102,15 @@ bool Map::get(const KeyType& key, ValueType& value) const {
 
 bool Map::get(int i, KeyType& key, ValueType& value) const {
     if(i >= 0 && i < size()) {
-        KeyType curr;
         int count = 0;
         for(int j = 0; j < m_numItems; j++) {
-            curr = m_items[j].key;
             for(int k = 0; k < m_numItems; k++) {
-                if(curr > m_items[k].key) {
+                if(m_items[j].key > m_items[k].key) {
                     count++;
                 }
             }
             if(count == i) {
-                key = curr;
+                key = m_items[j].key;
                 value = m_items[j].value;
                 return true;
             }
@@ -135,10 +131,3 @@ void Map::swap(Map& other) {
     other = temp;
 }
 // Exchange the contents of this map with the other one.
-
-
-void Map::dump() const {
-    for(int i = 0; i < m_numItems; i++) {
-        cerr << m_items[i].key << ", " << m_items[i].value << endl;
-    }
-}

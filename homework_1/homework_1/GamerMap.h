@@ -1,6 +1,7 @@
 #ifndef Gamer_h
 #define Gamer_h
 
+#include <string>
 #include "Map.h"
 
 class GamerMap {

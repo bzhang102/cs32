@@ -1,5 +1,5 @@
-// Gamer Tests
 #include "GamerMap.h"
+#include <string>
 #include <cassert>
 #include <iostream>
 

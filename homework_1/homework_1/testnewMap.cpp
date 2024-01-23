@@ -1,11 +1,29 @@
-// newMap Tests
 #include "newMap.h"
+#include <string>
 #include <cassert>
 #include <iostream>
 
 using namespace std;
 
 int main() {
+    Map a(1000);   // a can hold at most 1000 key/value pairs
+    Map b(5);      // b can hold at most 5 key/value pairs
+    Map c;         // c can hold at most DEFAULT_MAX_ITEMS key/value pairs
+    KeyType k[6] = {"a", "b", "c", "d", "e", "f"};
+    ValueType v  = 1.1;
+
+    // No failures inserting pairs with 5 distinct keys into b
+    for (int n = 0; n < 5; n++)
+        assert(b.insert(k[n], v));
+
+    // Failure if we try to insert a pair with a sixth distinct key into b
+    assert(!b.insert(k[5], v));
+
+    // When two Maps' contents are swapped, their capacities are swapped
+    // as well:
+    a.swap(b);
+    assert(!a.insert(k[5], v)  &&  b.insert(k[5], v));
+
     Map mm;
     mm.insert("Little Ricky", 3.206);
     mm.insert("Ethel", 3.538);
@@ -31,8 +49,6 @@ int main() {
     m2.insert("Lucy", 2.956);
     m2.insert("Ethel", 3.538);
     m1.swap(m2);
-    m1.dump();
-    m2.dump();
     assert(m1.size() == 2  &&  m1.contains("Ethel")  &&  m1.contains("Lucy"));
 
     Map gpas;
@@ -45,10 +61,10 @@ int main() {
     gpas.erase("Fred");
     assert(gpas.size() == 3  &&  gpas.contains("Lucy")  &&  gpas.contains("Ethel")  &&
            gpas.contains(""));
-    string k;
-    double v;
-    assert(gpas.get(1, k, v)  &&  k == "Ethel");
-    assert(gpas.get(0, k, v)  &&  k == "");
+    string l;
+    double m;
+    assert(gpas.get(1, l, m)  &&  l == "Ethel");
+    assert(gpas.get(0, l, m)  &&  l == "");
 
     cerr << "New Map Tests Passed" << endl;
 }

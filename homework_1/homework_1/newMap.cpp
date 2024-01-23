@@ -33,6 +33,9 @@ Map::~Map() {
 // Destructor
 
 Map& Map::operator=(const Map &other) {
+    if(&other == this) {
+        return *this;
+    }
     delete [] m_items;
     m_numItems = other.size();
     m_capacity = other.m_capacity;
@@ -165,15 +168,16 @@ bool Map::get(int i, KeyType& key, ValueType& value) const {
 // leave the key and value parameters unchanged and return false.
 
 void Map::swap(Map& other) {
-    Map temp = *this;
-    *this = other;
-    other = temp;
+    Item* temp = m_items;
+    m_items = other.m_items;
+    other.m_items = temp;
+
+    int tempNumItems = m_numItems;
+    m_numItems = other.m_numItems;
+    other.m_numItems = tempNumItems;
+
+    int tempCapacity = m_capacity;
+    m_capacity = other.m_capacity;
+    other.m_capacity = tempCapacity;
 }
 // Exchange the contents of this map with the other one.
-
-void Map::dump() const {
-    cerr << "Size: " << m_numItems << endl;
-    for(int i = 0; i < m_numItems; i++) {
-        cerr << m_items[i].key << ", " << m_items[i].value << endl;
-    }
-}

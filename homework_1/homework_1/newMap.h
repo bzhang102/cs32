@@ -10,7 +10,7 @@ using ValueType = double;
 class Map {
 public:
     Map();
-    Map(int size);
+    Map(int capacity);
     Map(const Map& other);
     ~Map();
     Map& operator=(const Map& other);
@@ -25,7 +25,6 @@ public:
     bool get(const KeyType& key, ValueType& value) const;
     bool get(int i, KeyType& key, ValueType& value) const;
     void swap(Map& other);
-    void dump() const;
 private:
     struct Item {
         KeyType key;

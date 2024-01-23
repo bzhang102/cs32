@@ -1,5 +1,5 @@
 #include <iostream>
-
+#include <string>
 #include "Map.h"
 #include "GamerMap.h"
 
@@ -8,7 +8,7 @@ using namespace std;
 GamerMap::GamerMap() {}
 // Create an empty gamer map.
 
-bool GamerMap::addGamer(std::string name){
+bool GamerMap::addGamer(string name){
     return m_map.insert(name, 0);
 }
 // If a person with the specified name is not currently in the map,
@@ -16,7 +16,7 @@ bool GamerMap::addGamer(std::string name){
 // recording that they have spent 0 hours gaming, and return true.
 // Otherwise, make no change to the map and return false.
 
-double GamerMap::hoursSpent(std::string name) const {
+double GamerMap::hoursSpent(string name) const {
     double hours;
     if(m_map.get(name, hours)) {
         return hours;
@@ -26,9 +26,9 @@ double GamerMap::hoursSpent(std::string name) const {
 // If a person with the specified name is in the map, return how
 // many hours they have spent gaming; otherwise, return -1.
 
-bool GamerMap::play(std::string name, double hours) {
+bool GamerMap::play(string name, double hours) {
     double oldHours;
-    if(m_map.get(name, oldHours) && oldHours >= 0) {
+    if(hours >= 0 && m_map.get(name, oldHours)) {
         m_map.update(name, oldHours + hours);
         return true;
     }

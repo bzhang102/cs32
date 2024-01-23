@@ -1,7 +1,7 @@
-// Map Tests
 #include "Map.h"
 #include <cassert>
 #include <iostream>
+#include <string>
 
 using namespace std;
 
