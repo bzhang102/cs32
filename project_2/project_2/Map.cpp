@@ -1,10 +1,15 @@
 #include "Map.h"
+#include <iostream>
+#include <cassert>
+
+using namespace std;
 
 // Constructors, Destructor, Assignment Operator
-Map::Map() {
+Map::Map(): m_size(0) {
     // construct dummy node and link it to itself
-    m_dummy = new Node(m_dummy, m_dummy);
-    m_size = 0;
+    m_dummy = new Node();
+    m_dummy->next = m_dummy;
+    m_dummy->prev = m_dummy;
 }
 Map::~Map() {
     // delete all nodes
@@ -18,7 +23,9 @@ Map::~Map() {
 }
 Map::Map(const Map& src) {
     // construct dummy node and link it to itself
-    m_dummy = new Node(m_dummy, m_dummy);
+    m_dummy = new Node();
+    m_dummy->next = m_dummy;
+    m_dummy->prev = m_dummy;
 
     // iterate through all nodes in src and insert new copies into this map
     m_size = src.m_size;
@@ -68,12 +75,11 @@ bool Map::insert(const KeyType& key, const ValueType& value) {
     }
 
     // dynamically allocates new node, linking it to correct nodes on either side
-    Node* p = new Node(key, value, m_dummy->prev, m_dummy->next);
-
+    Node* p = new Node(key, value, m_dummy, m_dummy->next);
     // links nodes on either side to new node
-    m_dummy->prev->next = p;
-    m_dummy->prev = p;
-    
+    m_dummy->next = p; // m_dummy's next node becomes p
+    m_dummy->next->next->prev = p; // second node's prev becomes p
+
     // increments size counter
     m_size++;
 
@@ -181,10 +187,11 @@ bool Map::get(int i, KeyType& key, ValueType& value) const {
 
             // increment outer pointer, reset count
             count = 0;
+            inner = m_dummy->next;
             outer = outer->next;
         }
     }
-    
+
     // if i is invalid, or not found (impossible), return false
     return false;
 }
@@ -198,6 +205,16 @@ void Map::swap(Map& other) {
     int tempSize = m_size;
     m_size = other.m_size;
     other.m_size = tempSize;
+}
+void Map::dump() {
+    Node* p = m_dummy->next;
+    for(int i = 0; i < m_size; i++) {
+        cerr << p->key << " : " << p->value;
+        cerr << " Next: " << p->next->key;
+        cerr << " Prev: " << p->prev->key;
+        cerr << endl;
+        p = p->next;
+    }
 }
 
 //Non Member Functions
@@ -232,7 +249,7 @@ bool merge(const Map& m1, const Map& m2, Map& result) {
 void reassign(const Map& m, Map& result) {
     // copy m into result
     result = Map(m);
-    
+
     KeyType key;
     ValueType value;
     KeyType firstKey;
