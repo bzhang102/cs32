@@ -1,8 +1,8 @@
-// MARK: REQ 1
-//#include "Map.h"
-//#include <iostream>
-//#include <cassert>
-//
+#include "Map.h"
+#include <iostream>
+#include <cassert>
+
+//// MARK: REQ 1
 //int main() {
 //    Map msd;  // KeyType is std::string, ValueType is double
 //    msd.insert("ccc", 80);
@@ -16,8 +16,7 @@
 //                                                // exactly 1 item
 //}
 
-// MARK: REQ 2
-//#include "Map.h"
+//// MARK: REQ 2
 //#include <type_traits>
 //
 //#define CHECKTYPE(c, f, r, a)  \
@@ -64,10 +63,7 @@
 //int main()
 //{}
 
-// MARK: REQ 3
-//#include "Map.h"
-//#include <iostream>
-//#include <cassert>
+//// MARK: REQ 3
 //using namespace std;
 //
 //void test()
@@ -93,9 +89,6 @@
 //}
 
 // MARK: REQ 4
-//#include "Map.h"
-//#include <iostream>
-//#include <cassert>
 //using namespace std;
 //
 //void test()
@@ -120,19 +113,96 @@
 //    cout << "Passed all tests" << endl;
 //}
 
-// MARK: TEST CASES
-#include "Map.h"
-#include <iostream>
-#include <cassert>
-
+//// MARK: BRANDON'S TEST CASES
 int main() {
     Map m;
+
+    // Empty Map Test Cases
+    assert(m.size() == 0);
+    assert(m.empty());
 
     // Insert Test Cases
     assert(m.insert("Brandon", 1.1));
     assert(m.insert("Rachel", 2));
     assert(m.insert("Sanjay", 3));
-    assert(m.insert("Brayden", 1.1));
+    assert(m.insert("Brayden", 4));
     assert(!m.insert("Brandon", 1.1));
     assert(m.size() == 4);
+    m.dump();
+
+    // Update Test Cases
+    assert(m.update("Rachel", 2.2));
+    assert(!m.update("Jon", 1));
+    assert(m.size() == 4);
+    m.dump();
+
+    // InsertOrUpdate Test Cases
+    assert(m.insertOrUpdate("Brayden", 4.4));
+    assert(m.insertOrUpdate("Jon", 5));
+    m.dump();
+
+    // Erase Test Cases
+    assert(m.erase("Brayden"));
+    assert(!m.erase("Andrew"));
+    assert(m.size() == 4);
+    m.dump();
+
+    // Contains Test Cases
+    assert(m.contains("Brandon"));
+    assert(!m.contains(""));
+    assert(!m.contains("Brayden"));
+
+    // 1st Get Test Cases
+    KeyType key1 = "Ellen";
+    ValueType value1 = 9.99;
+    assert(!m.get(key1, value1));
+    assert(value1 == 9.99);
+    key1 = "Rachel";
+    assert(m.get(key1, value1));
+    assert(value1 == 2.2);
+
+    // 2nd Get Test Cases
+    KeyType key2 = "Katie";
+    ValueType value2 = 9.99;
+    assert(!m.get(-1, key2, value2));
+    assert(!m.get(m.size(), key2, value2));
+    assert(key2 == "Katie" && value2 == 9.99);
+    assert(m.get(2, key2, value2));
+    assert(key2 == "Rachel" && value2 == 2.2);
+
+    // Swap Test Cases
+    Map m1;
+    assert(m1.insert("a", 1));
+    assert(m1.insert("b", 2));
+    Map m2;
+    assert(m2.insert("x", 3));
+    m1.swap(m2);
+    assert(m1.size() == 1 && m2.size() == 2);
+    KeyType key3 = "a";
+    ValueType value3;
+    assert(!m1.get(key3, value3));
+    assert(m2.get(key3, value3) && value3 == 1);
+
+    // Merge Test Cases
+    Map m3;
+    assert(m3.insert("Fred", 123));
+    assert(m3.insert("Ethel", 456));
+    assert(m3.insert("Lucy", 789));
+    Map m4;
+    assert(m4.insert("Lucy", 789));
+    assert(m4.insert("Ricky", 321));
+    Map result;
+    assert(result.insert("Your Mother", 69420));
+    assert(merge(m3, m4, result));
+    assert(result.size() == 4);
+    m3.dump();
+    m4.dump();
+    result.dump();
+    Map m5;
+    assert(m5.insert("Fred", 321));
+    assert(!merge(m3, m5, result));
+    assert(result.size() == 2);
+    result.dump();
+
+    std::cerr << "All Tests Passed :D" << std::endl;
 }

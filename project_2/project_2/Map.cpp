@@ -5,57 +5,39 @@
 using namespace std;
 
 // Constructors, Destructor, Assignment Operator
-Map::Map(): m_size(0) {
-    // construct dummy node and link it to itself
-    m_dummy = new Node();
+Map::Map(): m_dummy(new Node), m_size(0) {
+    // link dummy node to itself
     m_dummy->next = m_dummy;
     m_dummy->prev = m_dummy;
 }
 Map::~Map() {
     // delete all nodes
-    Node* p = m_dummy;
     Node* q;
-    for(int i = 0; i <= m_size; i++) { // <= to delete dummy node as well
+    for(Node* p = m_dummy->next; p != m_dummy;) {
         q = p->next;
         delete p;
         p = q;
     }
+    delete m_dummy;
 }
-Map::Map(const Map& src) {
-    // construct dummy node and link it to itself
-    m_dummy = new Node();
+Map::Map(const Map& src): m_dummy(new Node()), m_size(src.m_size) {
+    // link dummy node to itself
     m_dummy->next = m_dummy;
     m_dummy->prev = m_dummy;
 
     // iterate through all nodes in src and insert new copies into this map
-    m_size = src.m_size;
-    Node* p = src.m_dummy->next;
-    for(int i = 0; i < m_size; i++) {
+    for(Node* p = src.m_dummy->next; p != src.m_dummy; p = p->next) {
         insert(p->key, p->value);
     }
 }
 Map& Map::operator=(const Map& src) {
     // anti-aliasing
-    if(this == &src) {
-        return *this;
+    if(this != &src) {
+        // make copy of src
+        Map temp(src);
+        // swap map with copy (current map will get destroyed once out of scope)
+        swap(temp);
     }
-
-    // delete all nodes except dummy node
-    Node* p = m_dummy;
-    Node* q;
-    for(int i = 0; i < m_size; i++) { // < to NOT delete dummy node
-        q = p->next;
-        delete p;
-        p = q;
-    }
-
-    // copy over all nodes from src
-    m_size = src.m_size;
-    p = src.m_dummy->next;
-    for(int i = 0; i < m_size; i++) {
-        insert(p->key, p->value);
-    }
-
     return *this;
 }
 
@@ -76,6 +58,7 @@ bool Map::insert(const KeyType& key, const ValueType& value) {
 
     // dynamically allocates new node, linking it to correct nodes on either side
     Node* p = new Node(key, value, m_dummy, m_dummy->next);
+
     // links nodes on either side to new node
     m_dummy->next = p; // m_dummy's next node becomes p
     m_dummy->next->next->prev = p; // second node's prev becomes p
@@ -86,34 +69,22 @@ bool Map::insert(const KeyType& key, const ValueType& value) {
     return true;
 }
 bool Map::update(const KeyType& key, const ValueType& value) {
-    Node* p = m_dummy->next;
-    for(int i = 0; i < m_size; i++) {
+    for(Node* p = m_dummy->next; p != m_dummy; p = p->next) {
         // updates value at key if found
         if(p->key == key) {
             p->value = value;
             return true;
         }
-        p = p->next;
     }
     // if all nodes exhausted, return false
     return false;
 }
 bool Map::insertOrUpdate(const KeyType& key, const ValueType& value) {
-    Node* p = m_dummy->next;
-    for(int i = 0; i < m_size; i++) {
-        //updates value at key if found
-        if(p->key == key) {
-            p->value = value;
-            return true;
-        }
-        p = p->next;
-    }
-    // if all nodes exhausted, insert new value
-    return insert(key, value);
+    // attempts to update, if failed, inserts instead
+    return update(key, value) ? true : insert(key, value);
 }
 bool Map::erase(const KeyType& key) {
-    Node* p = m_dummy->next;
-    for(int i = 0; i < m_size; i++) {
+    for(Node* p = m_dummy->next; p != m_dummy; p = p->next) {
         // erases value if found
         if(p->key == key) {
             // links nodes on either side
@@ -128,32 +99,27 @@ bool Map::erase(const KeyType& key) {
 
             return true;
         }
-        p = p->next;
     }
     // if all nodes exhausted, return false
     return false;
 }
 bool Map::contains(const KeyType& key) const {
-    Node* p = m_dummy->next;
-    for(int i = 0; i < m_size; i++) {
+    for(Node* p = m_dummy->next; p != m_dummy; p = p->next) {
         // if key found, return true
         if(p->key == key) {
             return true;
         }
-        p = p->next;
     }
     // if all nodes exhausted, return false
     return false;
 }
 bool Map::get(const KeyType& key, ValueType& value) const {
-    Node* p = m_dummy->next;
-    for(int i = 0; i < m_size; i++) {
+    for(Node* p = m_dummy->next; p != m_dummy; p = p->next) {
         // if key found, reassign value to stored value
         if(p->key == key) {
             value = p->value;
             return true;
         }
-        p = p->next;
     }
     // if all nodes exhausted, return false
     return false;
@@ -161,34 +127,23 @@ bool Map::get(const KeyType& key, ValueType& value) const {
 bool Map::get(int i, KeyType& key, ValueType& value) const {
     // checks for valid i
     if(i >= 0 && i < m_size) {
-        // variables declared outside loop to save space
-        int count = 0;
-        Node* outer = m_dummy->next;
-        Node* inner = m_dummy->next;
-
         // iterate through each node once
-        for(int j = 0; j < m_size; j++) {
+        for(Node* p = m_dummy->next; p != m_dummy; p = p->next) {
+            int count = 0;
             // compare inner node with outer node
-            for(int k = 0; k < m_size; k++) {
+            for(Node* q = m_dummy->next; q != m_dummy; q = q->next) {
                 // count number of nodes that contain nodes with a key < outer's key
-                if(outer->key > inner->key) {
+                if(p->key > q->key) {
                     count++;
                 }
-                // inner pointer should always return to the dummy node
-                inner = inner->next;
             }
 
             // if key of outer is strictly greater than i keys, return that pair
             if(count == i) {
-                key = outer->key;
-                value = outer->value;
+                key = p->key;
+                value = p->value;
                 return true;
             }
-
-            // increment outer pointer, reset count
-            count = 0;
-            inner = m_dummy->next;
-            outer = outer->next;
         }
     }
 
@@ -206,15 +161,16 @@ void Map::swap(Map& other) {
     m_size = other.m_size;
     other.m_size = tempSize;
 }
-void Map::dump() {
+void Map::dump() const {
     Node* p = m_dummy->next;
     for(int i = 0; i < m_size; i++) {
-        cerr << p->key << " : " << p->value;
-        cerr << " Next: " << p->next->key;
-        cerr << " Prev: " << p->prev->key;
+        cerr << p->key << ":" << p->value;
+        cerr << " Next:" << p->next->key;
+        cerr << " Prev:" << p->prev->key;
         cerr << endl;
         p = p->next;
     }
+    cerr << endl;
 }
 
 //Non Member Functions
@@ -222,8 +178,8 @@ bool merge(const Map& m1, const Map& m2, Map& result) {
     // state bool to track if merge conflict occurs
     bool state = true;
 
-    // copy m1 into result
-    result = Map(m1);
+    // call result's assignment operator with m1
+    result = m1;
 
     KeyType key;
     ValueType value;

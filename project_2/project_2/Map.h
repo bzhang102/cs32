@@ -24,19 +24,13 @@ public:
     bool get(int i, KeyType& key, ValueType& value) const;
     void swap(Map& other);
 
-    void dump();
+    void dump() const;
 private:
     struct Node {
-        Node() {
-            prev = nullptr;
-            next = nullptr;
-        }
-        Node(KeyType k, ValueType v, Node* p, Node* n) {
-            key = k;
-            value = v;
-            prev = p;
-            next = n;
-        }
+        inline
+        Node() : prev(nullptr), next(nullptr) {}
+        inline
+        Node(KeyType k, ValueType v, Node* p, Node* n) : key(k), value(v), prev(p), next(n) {}
         KeyType key;
         ValueType value;
         Node* prev;
@@ -46,7 +40,7 @@ private:
     int m_size;
 };
 
-#endif
-
 bool merge(const Map& m1, const Map& m2, Map& result);
 void reassign(const Map& m, Map& result);
+
+#endif
