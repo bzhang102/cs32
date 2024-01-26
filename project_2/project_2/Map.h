@@ -6,8 +6,7 @@
 using KeyType = std::string;
 using ValueType = double;
 
-class Map
-{
+class Map {
 public:
     Map();
     ~Map();
@@ -26,14 +25,26 @@ public:
     void swap(Map& other);
 private:
     struct Node {
+        Node() {
+            prev = nullptr;
+            next = nullptr;
+        }
+        Node(Node* p, Node* n) {
+            prev = p;
+            next = n;
+        }
+        Node(KeyType k, ValueType v, Node* p, Node* n) {
+            key = k;
+            value = v;
+            prev = p;
+            next = n;
+        }
         KeyType key;
         ValueType value;
-        Node* next;
         Node* prev;
+        Node* next;
     };
-    Node* head;
-    Node* tail;
-
+    Node* m_dummy;
     int m_size;
 };
 
