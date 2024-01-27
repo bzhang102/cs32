@@ -1,6 +1,4 @@
 #include "Map.h"
-#include <iostream>
-#include <cassert>
 
 using namespace std;
 
@@ -20,7 +18,7 @@ Map::~Map() {
     }
     delete m_dummy;
 }
-Map::Map(const Map& src): m_dummy(new Node()), m_size(src.m_size) {
+Map::Map(const Map& src): m_dummy(new Node()), m_size(0) {
     // link dummy node to itself
     m_dummy->next = m_dummy;
     m_dummy->prev = m_dummy;
@@ -161,17 +159,6 @@ void Map::swap(Map& other) {
     m_size = other.m_size;
     other.m_size = tempSize;
 }
-void Map::dump() const {
-    Node* p = m_dummy->next;
-    for(int i = 0; i < m_size; i++) {
-        cerr << p->key << ":" << p->value;
-        cerr << " Next:" << p->next->key;
-        cerr << " Prev:" << p->prev->key;
-        cerr << endl;
-        p = p->next;
-    }
-    cerr << endl;
-}
 
 //Non Member Functions
 bool merge(const Map& m1, const Map& m2, Map& result) {
@@ -204,20 +191,20 @@ bool merge(const Map& m1, const Map& m2, Map& result) {
 }
 void reassign(const Map& m, Map& result) {
     // copy m into result
-    result = Map(m);
+    result = m;
+    
+    // store first node
+    KeyType key1;
+    ValueType val1;
+    result.get(0, key1, val1);
 
     KeyType key;
-    ValueType value;
-    KeyType firstKey;
-    ValueType temp;
-    result.get(0, firstKey, value);
-
-    // iterate through all nodes except the first
+    ValueType val;
+    //iterate starting from second node, replacing it with the previous value
     for(int i = 1; i < result.size(); i++) {
-        result.get(i, key, temp);
-        result.update(key, value);
-        value = temp;
+        result.get(i, key, val);
+        result.update(key, val1);
+        val1 = val;
     }
-    // update first node's value to equal last node's value
-    result.update(firstKey, value);
+    result.update(key1, val);
 }

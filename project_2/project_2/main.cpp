@@ -88,7 +88,7 @@
 //    cout << "Passed all tests" << endl;
 //}
 
-// MARK: REQ 4
+//// MARK: REQ 4
 //using namespace std;
 //
 //void test()
@@ -128,24 +128,20 @@ int main() {
     assert(m.insert("Brayden", 4));
     assert(!m.insert("Brandon", 1.1));
     assert(m.size() == 4);
-    m.dump();
 
     // Update Test Cases
     assert(m.update("Rachel", 2.2));
     assert(!m.update("Jon", 1));
     assert(m.size() == 4);
-    m.dump();
 
     // InsertOrUpdate Test Cases
     assert(m.insertOrUpdate("Brayden", 4.4));
     assert(m.insertOrUpdate("Jon", 5));
-    m.dump();
 
     // Erase Test Cases
     assert(m.erase("Brayden"));
     assert(!m.erase("Andrew"));
     assert(m.size() == 4);
-    m.dump();
 
     // Contains Test Cases
     assert(m.contains("Brandon"));
@@ -195,14 +191,30 @@ int main() {
     assert(result.insert("Your Mother", 69420));
     assert(merge(m3, m4, result));
     assert(result.size() == 4);
-    m3.dump();
-    m4.dump();
-    result.dump();
     Map m5;
     assert(m5.insert("Fred", 321));
     assert(!merge(m3, m5, result));
     assert(result.size() == 2);
-    result.dump();
+
+    // Reassign Test Cases
+    Map dance;
+    assert(dance.insert("Fred", 1));
+    assert(dance.insert("Ethel", 2));
+    assert(dance.insert("Lucy", 3));
+    assert(dance.insert("Ricky", 4));
+    Map scrambled;
+    assert(scrambled.insert("Love", 92523));
+    reassign(dance, scrambled);
+    ValueType fredNum;
+    ValueType ethelNum;
+    ValueType lucyNum;
+    ValueType rickyNum;
+    assert(scrambled.get("Fred", fredNum));
+    assert(scrambled.get("Ethel", ethelNum));
+    assert(scrambled.get("Lucy", lucyNum));
+    assert(scrambled.get("Ricky", rickyNum));
+    assert(fredNum != 1 && ethelNum != 2 && lucyNum != 3 && rickyNum != 4);
+    assert(fredNum != ethelNum != lucyNum != rickyNum);
 
     std::cerr << "All Tests Passed :D" << std::endl;
 }
