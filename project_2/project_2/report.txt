@@ -1,0 +1,267 @@
+Yuxiang Zhang
+206142605
+
+1. Description:
+    a. This Map implementation uses a circular, doubly linked list with a dummy node. Each instance of the map class contains a pointer to the dummy node, and an int variable that tracks the number of elements it contains. Each list node contains pointers to the next node, as well as to the previous node. Each node also contains a KeyType key, and a ValueType value.
+    b. Pseudocode:
+        Constructors/Destructors/Assignment Operator:
+            Map():
+                Initialize size to zero
+                Dynamically allocate dummy node and link its pointers to itself
+
+            Map(Map src):
+                Initialize size to zero
+                Dynamically allocate dummy node and link its pointers to itself
+                Iteratively:
+                    Read key/value pairs from src using get()
+                    Push key/value pairs into list using insert() (insert will increment size)
+
+            ~Map():
+                Iteratively:
+                    Delete list nodes
+                Delete dummy node
+
+            operator=(Map src):
+                If this is not an attempt to copy itself:
+                    Instantiate a temporary map by calling the copy constructor of src
+                    Switch the contents of this with the temporary map (copy of src) using swap()
+                Return self
+
+        Non-Trivial Member Function Implementations:
+            insert(key, value):
+                If key exists in map (check using contains()), return false
+                Dynamicaly allocate new node with given key and value
+                Set new node's prev pointer to point to dummy node
+                Set new node's next pointer to point to dummy node's next node
+                Set dummy node's next pointer to point to new node
+                Set new node's next node's prev pointer to point to new node
+                Increment size counter
+
+            update(key, value):
+                Iteratively:
+                    If current node's key is equal to key:
+                        Replace existing value with passed value and return true
+                All nodes exhausted, return false without changing anything
+
+            insertOrUpdate(key, value):
+                Attempt to update using update(), if successful, return true
+                Insert using insert() and return true
+
+            erase(key):
+                Iteratively:
+                    If current node's key is equal to key:
+                        Link previous node to next node
+                        Link next node to previous node
+                        Delete current node
+                        decrement size and return true
+                All nodes exhausted, return false without changing anything
+
+            contains(key):
+                Iteratively:
+                    If current node's key is equal to key:
+                        Return true
+                All nodes exhausted, return false
+
+            get(key, value):
+                Iteratively:
+                    If current node's key is equal to key:
+                        Assign value to be node's value
+                        Return true
+                All nodes exhausted, return false without changing anything
+
+            get(i, key, value):
+                If i is invalid, return false without changing anything
+                Iteratively:
+                    Look at outer node node
+                    Interatively:
+                        Count number of keys that the outer node's key is strictly greater than
+                    If count is equal to i
+                        Set key to be outer node's key
+                        Set value to be outer node's value
+                        Return true
+                Return false (this will never execute)
+
+            swap(other):
+                Swap dummy node with other map
+                Swap size counter with other map
+
+        Other Functions:
+            merge(m1, m2, result):
+                Assign result with m1 (call assignment operator)
+                Iteratively:
+                    Get key value pair from m2 using get()
+                    If key already exists in result:
+                        If m2's value is different from result's:
+                            Remove key from result using erase()
+                    Else:
+                        Insert new key value pair using insert()
+                If a conflict was found, return false, else return true
+
+            reassign(m, result):
+                Assign result with m (call assignment operator)
+                Store key value pair of first node
+                Iteratively:
+                    Get next key value pair using get()
+                    Replace the value of the node with the previous value using update()
+                Replace the value of the first node with the value of the last node
+
+    c. Test Cases:
+
+    Map m;
+
+    // Empty Map Test Cases
+    assert(m.size() == 0);
+        Map should have no elements on creation
+    assert(m.empty());
+        Map should have no elements on creation
+
+    // Insert Test Cases
+    assert(m.insert("Brandon", 1.1));
+        Normal insertion
+    assert(m.insert("Rachel", 2));
+        Normal insertion
+    assert(m.insert("Sanjay", 3));
+        Normal insertion
+    assert(m.insert("Brayden", 4));
+        Normal insertion
+    assert(!m.insert("Brandon", 1.1));
+        Insertion of duplicate key should fail
+    assert(m.size() == 4);
+        Size at this point should be 4
+
+    // Update Test Cases
+    assert(m.update("Rachel", 2.2));
+        Normal update
+    assert(!m.update("Jon", 1));
+        Update of nonexistent value should fail
+    assert(m.size() == 4);
+        Update should not affect size
+
+    // InsertOrUpdate Test Cases
+    assert(m.insertOrUpdate("Brayden", 4.4));
+        Normal update
+    assert(m.insertOrUpdate("Jon", 5));
+        Insertion of key that does not exist
+    assert(m.size() == 5)
+        Size should now be 5
+
+    // Erase Test Cases
+    assert(m.erase("Brayden"));
+        Normal erasure
+    assert(!m.erase("Andrew"));
+        Erasure of nonexistent
+    assert(m.size() == 4);
+        Size should now be 4
+
+    // Contains Test Cases
+    assert(m.contains("Brandon"));
+        Should contain key
+    assert(!m.contains(""));
+        Should not contain empty key (as in the dummy node)
+    assert(!m.contains("Brayden"));
+        Should not contain deleted node
+
+    // 1st Get Test Cases
+    KeyType key1 = "Ellen";
+    ValueType value1 = 9.99;
+    assert(!m.get(key1, value1));
+        Key should not exist
+    assert(value1 == 9.99);
+        Value should remain unchanged
+    key1 = "Rachel";
+    assert(m.get(key1, value1));
+        Key exists
+    assert(value1 == 2.2);
+        Value successfully updated
+
+    // 2nd Get Test Cases
+    KeyType key2 = "Katie";
+    ValueType value2 = 9.99;
+    assert(!m.get(-1, key2, value2));
+        i is invalid (lower)
+    assert(!m.get(m.size(), key2, value2));
+        i is invalid (upper)
+    assert(key2 == "Katie" && value2 == 9.99);
+        Key and value should remain unchanged
+    assert(m.get(2, key2, value2));
+        2 is a valid i
+    assert(key2 == "Rachel" && value2 == 2.2);
+        Key and value successfully updated
+
+    // Swap Test Cases
+    Map m1;
+    assert(m1.insert("a", 1));
+        Insert
+    assert(m1.insert("b", 2));
+        Insert
+    Map m2;
+    assert(m2.insert("x", 3));
+        Insert
+    m1.swap(m2);
+    assert(m1.size() == 1 && m2.size() == 2);
+        Check successful insertion
+    KeyType key3 = "a";
+    ValueType value3;
+    assert(!m1.get(key3, value3));
+        Check to see if maps have changed
+    assert(m2.get(key3, value3) && value3 == 1);
+        Check to see if maps have changed
+
+    // Merge Test Cases
+    Map m3;
+    assert(m3.insert("Fred", 123));
+        Insert
+    assert(m3.insert("Ethel", 456));
+        Insert
+    assert(m3.insert("Lucy", 789));
+        Insert
+    Map m4;
+    assert(m4.insert("Lucy", 789));
+        Insert
+    assert(m4.insert("Ricky", 321));
+        Insert
+    Map result;
+    assert(result.insert("Your Mother", 69420));
+        Insert dummy value
+    assert(merge(m3, m4, result));
+        Merge should be successful
+    assert(result.size() == 4);
+        Merged size should ignore the duplicate
+    Map m5;
+    assert(m5.insert("Fred", 321));
+        Insert
+    assert(!merge(m3, m5, result));
+        Merge should fail because of conflict
+    assert(result.size() == 2);
+        Result should delete the duplicate
+
+    // Reassign Test Cases
+    Map dance;
+    assert(dance.insert("Fred", 1));
+        Insert
+    assert(dance.insert("Ethel", 2));
+        Insert
+    assert(dance.insert("Lucy", 3));
+        Insert
+    assert(dance.insert("Ricky", 4));
+        Insert
+    Map scrambled;
+    assert(scrambled.insert("Love", 92523));
+        Insert dummy value
+    reassign(dance, scrambled);
+    ValueType fredNum;
+    ValueType ethelNum;
+    ValueType lucyNum;
+    ValueType rickyNum;
+    assert(scrambled.get("Fred", fredNum));
+        Store value
+    assert(scrambled.get("Ethel", ethelNum));
+        Store value
+    assert(scrambled.get("Lucy", lucyNum));
+        Store value
+    assert(scrambled.get("Ricky", rickyNum));
+        Store value
+    assert(fredNum != 1 && ethelNum != 2 && lucyNum != 3 && rickyNum != 4);
+        Check if all values have changed locations
+    assert(fredNum != ethelNum != lucyNum != rickyNum);
+        Check for errors in reassignment

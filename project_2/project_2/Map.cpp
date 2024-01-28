@@ -1,4 +1,5 @@
 #include "Map.h"
+#include <iostream>
 
 using namespace std;
 
@@ -7,16 +8,6 @@ Map::Map(): m_dummy(new Node), m_size(0) {
     // link dummy node to itself
     m_dummy->next = m_dummy;
     m_dummy->prev = m_dummy;
-}
-Map::~Map() {
-    // delete all nodes
-    Node* q;
-    for(Node* p = m_dummy->next; p != m_dummy;) {
-        q = p->next;
-        delete p;
-        p = q;
-    }
-    delete m_dummy;
 }
 Map::Map(const Map& src): m_dummy(new Node()), m_size(0) {
     // link dummy node to itself
@@ -27,6 +18,16 @@ Map::Map(const Map& src): m_dummy(new Node()), m_size(0) {
     for(Node* p = src.m_dummy->next; p != src.m_dummy; p = p->next) {
         insert(p->key, p->value);
     }
+}
+Map::~Map() {
+    // delete all nodes
+    Node* q;
+    for(Node* p = m_dummy->next; p != m_dummy;) {
+        q = p->next;
+        delete p;
+        p = q;
+    }
+    delete m_dummy;
 }
 Map& Map::operator=(const Map& src) {
     // anti-aliasing
@@ -46,6 +47,11 @@ bool Map::empty() const {
 int Map::size() const {
     return m_size;
 }
+void Map::dump() {
+    for(Node* p = m_dummy->next; p != m_dummy; p = p->next) {
+        cerr << p->key << " "<< p->value << endl;
+    }
+}
 
 // Member Functions
 bool Map::insert(const KeyType& key, const ValueType& value) {
@@ -59,7 +65,7 @@ bool Map::insert(const KeyType& key, const ValueType& value) {
 
     // links nodes on either side to new node
     m_dummy->next = p; // m_dummy's next node becomes p
-    m_dummy->next->next->prev = p; // second node's prev becomes p
+    p->next->prev = p; // second node's prev becomes p
 
     // increments size counter
     m_size++;
@@ -79,7 +85,7 @@ bool Map::update(const KeyType& key, const ValueType& value) {
 }
 bool Map::insertOrUpdate(const KeyType& key, const ValueType& value) {
     // attempts to update, if failed, inserts instead
-    return update(key, value) ? true : insert(key, value);
+    return update(key, value) || insert(key, value);
 }
 bool Map::erase(const KeyType& key) {
     for(Node* p = m_dummy->next; p != m_dummy; p = p->next) {

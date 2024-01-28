@@ -9,12 +9,13 @@ using ValueType = double;
 class Map {
 public:
     Map();
-    ~Map();
     Map(const Map& src);
+    ~Map();
     Map& operator=(const Map& src);
 
     bool empty() const;
     int size() const;
+    void dump();
 
     bool insert(const KeyType& key, const ValueType& value);
     bool update(const KeyType& key, const ValueType& value);
