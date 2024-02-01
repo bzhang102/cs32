@@ -3,8 +3,8 @@
 
 #include <string>
 
-using KeyType = std::string;
-using ValueType = double;
+using KeyType = char;
+using ValueType = int;
 
 class Map {
 public:

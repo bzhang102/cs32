@@ -1,0 +1,32 @@
+Yuxiang Zhang
+205142605
+
+2. First 12 Stack Pops (according to order in given algorithm):
+    (6, 5)
+    (6, 6)
+    (6, 4)
+    (7, 4)
+    (8, 4)
+    (8, 3)
+    (8, 2)
+    (8, 1)
+    (7, 1)
+    (6, 3)
+    (5, 5)
+    (4, 5)
+
+4. First 12 Queue Pops (according to order in given algorithm):
+    (6, 5)
+    (5, 5)
+    (6, 4)
+    (6, 6)
+    (4, 5)
+    (6, 3)
+    (7, 4)
+    (3, 5)
+    (4, 4)
+    (8, 4)
+    (2, 5)
+    (4, 3)
+
+    The queue based algorithm traverses all the possible paths spanning from a single branch first (i.e. like water flowing down multiple channels), executing a breadth-first-search. On the other hand, the stack based algorithm traverses all the way down a single path, then backtracking once it finds a dead end, executing a depth-first-search.
