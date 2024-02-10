@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CA75A5F62B77017C00C7636F /* animal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA75A5F52B77017C00C7636F /* animal.cpp */; };
+		CA75A5F82B7701C300C7636F /* animal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA75A5F72B7701C300C7636F /* animal.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -24,7 +24,7 @@
 
 /* Begin PBXFileReference section */
 		CA75A5EB2B77016C00C7636F /* homework_3 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = homework_3; sourceTree = BUILT_PRODUCTS_DIR; };
-		CA75A5F52B77017C00C7636F /* animal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = animal.cpp; path = ../../../../../Desktop/animal.cpp; sourceTree = "<group>"; };
+		CA75A5F72B7701C300C7636F /* animal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = animal.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,7 +57,7 @@
 		CA75A5ED2B77016C00C7636F /* homework_3 */ = {
 			isa = PBXGroup;
 			children = (
-				CA75A5F52B77017C00C7636F /* animal.cpp */,
+				CA75A5F72B7701C300C7636F /* animal.cpp */,
 			);
 			path = homework_3;
 			sourceTree = "<group>";
@@ -119,7 +119,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CA75A5F62B77017C00C7636F /* animal.cpp in Sources */,
+				CA75A5F82B7701C300C7636F /* animal.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
