@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CA71306F2B7ABF8500E37ED9 /* linear.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA71306E2B7ABF8500E37ED9 /* linear.cpp */; };
+		CA7130712B7AD1B900E37ED9 /* mazerecursion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA7130702B7AD1B900E37ED9 /* mazerecursion.cpp */; };
+		CA7130732B7AD27F00E37ED9 /* tree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA7130722B7AD27F00E37ED9 /* tree.cpp */; };
 		CA75A5F82B7701C300C7636F /* animal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA75A5F72B7701C300C7636F /* animal.cpp */; };
 /* End PBXBuildFile section */
 
@@ -23,6 +26,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		CA71306E2B7ABF8500E37ED9 /* linear.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = linear.cpp; sourceTree = "<group>"; };
+		CA7130702B7AD1B900E37ED9 /* mazerecursion.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mazerecursion.cpp; sourceTree = "<group>"; };
+		CA7130722B7AD27F00E37ED9 /* tree.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tree.cpp; sourceTree = "<group>"; };
 		CA75A5EB2B77016C00C7636F /* homework_3 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = homework_3; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA75A5F72B7701C300C7636F /* animal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = animal.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -57,7 +63,10 @@
 		CA75A5ED2B77016C00C7636F /* homework_3 */ = {
 			isa = PBXGroup;
 			children = (
+				CA7130702B7AD1B900E37ED9 /* mazerecursion.cpp */,
+				CA71306E2B7ABF8500E37ED9 /* linear.cpp */,
 				CA75A5F72B7701C300C7636F /* animal.cpp */,
+				CA7130722B7AD27F00E37ED9 /* tree.cpp */,
 			);
 			path = homework_3;
 			sourceTree = "<group>";
@@ -119,7 +128,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA71306F2B7ABF8500E37ED9 /* linear.cpp in Sources */,
+				CA7130732B7AD27F00E37ED9 /* tree.cpp in Sources */,
 				CA75A5F82B7701C300C7636F /* animal.cpp in Sources */,
+				CA7130712B7AD1B900E37ED9 /* mazerecursion.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
