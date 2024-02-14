@@ -1,13 +1,3 @@
-#include <cassert>
-#include <iostream>
-
-void print(double a[], int n) {
-    for(int i = 0; i < n; i++) {
-        std::cerr << a[i] << " ";
-    }
-    std::cerr << std::endl;
-}
-
 // Return the number of ways that all n2 elements of a2 appear in
 // the n1 element array a1 in the same order (though not necessarily
 // consecutively).  The empty sequence (i.e. one where n2 is 0)
@@ -85,39 +75,4 @@ void order(double a[], int n) {
     divide(a, n, a[n/2], firstNotGreater, firstLess);
     order(a, firstNotGreater);
     order(a + firstLess, n - firstLess);
-}
-
-int main() {
-    double a1[] = {10, 50, 40, 20, 50, 40, 30};
-    double a2[] = {10, 20, 40};
-    double a3[] = {10, 40, 30};
-    double a4[] = {20, 10, 40};
-    double a5[] = {50, 40, 30};
-
-    assert(countIncludes(a1, 7, a2, 3) == 1);
-    assert(countIncludes(a1, 7, a3, 3) == 2);
-    assert(countIncludes(a1, 7, a4, 3) == 0);
-    assert(countIncludes(a1, 7, a5, 3) == 3);
-    assert(countIncludes(a1, 7, a2, 0) == 1);
-    assert(countIncludes(a1, 7, a2, -2) == 1);
-    assert(countIncludes(a1, 0, a2, 3) == 0);
-    assert(countIncludes(a1, -1, a2, 3) == 0);
-
-    double b1[] = {10, 50, 40, 20, 50, 40, 30};
-    double b2[] = {-30, 10, 10, 10, 20, 20, -30};
-    double b3[] = {10};
-    double b4[] = {};
-
-    order(b1, 7);
-    print(b1, 7);
-    order(b2, 7);
-    print(b2, 7);
-    order(b3, 1);
-    print(b3, 1);
-    order(b4, 0);
-    print(b4, 0);
-    order(b4, -1);
-    print(b4, -1);
-
-    std::cerr << "All Test Cases Passed!" << std::endl;
 }
