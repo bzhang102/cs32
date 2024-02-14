@@ -72,7 +72,7 @@ void divide(double a[], int n, double divider, int& firstNotGreater, int& firstL
 void order(double a[], int n) {
     if(n <= 1) return;
     int firstNotGreater, firstLess;
-    divide(a, n, a[n/2], firstNotGreater, firstLess);
+    divide(a, n, a[0], firstNotGreater, firstLess);
     order(a, firstNotGreater);
     order(a + firstLess, n - firstLess);
 }
