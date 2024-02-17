@@ -79,20 +79,12 @@
 		4B91F8A72033F260003AFA78 /* MarbleMadness */ = {
 			isa = PBXGroup;
 			children = (
+				CAFCB3A12B80752A00D354B4 /* Interfaces */,
 				4B91F8B62033F3F7003AFA78 /* Actor.cpp */,
 				4B91F8B02033F3F7003AFA78 /* Actor.h */,
-				4BDD1225299A1704000721B8 /* Level.h */,
-				4B91F8B52033F3F7003AFA78 /* GameConstants.h */,
-				4B91F8B82033F3F7003AFA78 /* GameController.cpp */,
-				4B91F8BA2033F3F7003AFA78 /* GameController.h */,
-				4B91F8B12033F3F7003AFA78 /* GameWorld.cpp */,
-				4B91F8BB2033F3F7003AFA78 /* GameWorld.h */,
-				4B91F8AF2033F3F7003AFA78 /* GraphObject.h */,
-				4B91F8B42033F3F7003AFA78 /* main.cpp */,
-				4B91F8BD2033F3F8003AFA78 /* SoundFX.h */,
-				4B91F8BC2033F3F7003AFA78 /* SpriteManager.h */,
 				4B91F8B22033F3F7003AFA78 /* StudentWorld.cpp */,
 				4B91F8BE2033F3F8003AFA78 /* StudentWorld.h */,
+				CAFCB3A02B80704700D354B4 /* Utilities */,
 			);
 			path = MarbleMadness;
 			sourceTree = "<group>";
@@ -104,6 +96,30 @@
 				4B91F8C52034176C003AFA78 /* OpenGL.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CAFCB3A02B80704700D354B4 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				4BDD1225299A1704000721B8 /* Level.h */,
+				4B91F8BD2033F3F8003AFA78 /* SoundFX.h */,
+				4B91F8BC2033F3F7003AFA78 /* SpriteManager.h */,
+				4B91F8BA2033F3F7003AFA78 /* GameController.h */,
+				4B91F8B82033F3F7003AFA78 /* GameController.cpp */,
+				4B91F8B42033F3F7003AFA78 /* main.cpp */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		CAFCB3A12B80752A00D354B4 /* Interfaces */ = {
+			isa = PBXGroup;
+			children = (
+				4B91F8AF2033F3F7003AFA78 /* GraphObject.h */,
+				4B91F8B52033F3F7003AFA78 /* GameConstants.h */,
+				4B91F8BB2033F3F7003AFA78 /* GameWorld.h */,
+				4B91F8B12033F3F7003AFA78 /* GameWorld.cpp */,
+			);
+			path = Interfaces;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -133,7 +149,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastUpgradeCheck = 1130;
+				LastUpgradeCheck = 1500;
 				ORGANIZATIONNAME = "UCLA Computer Science Department";
 				TargetAttributes = {
 					4B91F8A42033F260003AFA78 = {
@@ -210,9 +226,11 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -269,9 +287,11 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -293,10 +313,11 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = YES;
 				"HEADER_SEARCH_PATHS[arch=*]" = /usr/X11/include/GL;
 				"LIBRARY_SEARCH_PATHS[arch=*]" = /usr/X11/lib;
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				"OTHER_LDFLAGS[arch=*]" = "-lglut";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALIDATE_WORKSPACE_SKIPPED_SDK_FRAMEWORKS = OpenGL;
@@ -308,10 +329,11 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = YES;
 				"HEADER_SEARCH_PATHS[arch=*]" = /usr/X11/include/GL;
 				"LIBRARY_SEARCH_PATHS[arch=*]" = /usr/X11/lib;
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				"OTHER_LDFLAGS[arch=*]" = "-lglut";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALIDATE_WORKSPACE_SKIPPED_SDK_FRAMEWORKS = OpenGL;
