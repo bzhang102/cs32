@@ -1,0 +1,4 @@
+206142605
+Yuxiang Zhang
+
+1e. Test 2 uses an iterator to traverse the vector, but because the vector needs to be reallocated, the iterator becomes invalidated, and will not result in some items not being MAGIC anymore.
