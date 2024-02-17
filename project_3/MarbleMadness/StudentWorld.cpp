@@ -11,7 +11,11 @@ GameWorld* createStudentWorld(string assetPath) {
 // Students:  Add code to this file, StudentWorld.h, Actor.h, and Actor.cpp
 
 StudentWorld::StudentWorld(string assetPath)
-: GameWorld(assetPath) {}
+: GameWorld(assetPath), m_bonus(1000) {}
+
+StudentWorld::~StudentWorld() {
+    cleanUp();
+}
 
 int StudentWorld::init() {
     string levelPath = "level00.txt";
@@ -31,13 +35,12 @@ int StudentWorld::init() {
                     case Level::empty:
                         break;
                     case Level::player:
-                        // TODO: load avatar
+                        m_player = new Avatar(this, x, y);
                         break;
                     case Level::wall:
                         m_actors.push_back(new Wall(this, x, y));
                         break;
                     default:
-                        // TODO: load other actors
                         break;
                 }
             }
@@ -48,17 +51,41 @@ int StudentWorld::init() {
 }
 
 int StudentWorld::move() {
-    setGameStatText("Game will end when you type q");
-
+//    updateDisplayText();
     for(auto it = m_actors.begin(); it != m_actors.end(); it++) {
         (*it)->doSomething();
+        if(m_player->hitpoints() <= 0) return GWSTATUS_PLAYER_DIED;
+//            if (thePlayerCompletedTheCurrentLevel()) {
+//                increaseScoreAppropriately();
+//                return GWSTATUS_FINISHED_LEVEL;
+//            }
     }
 
-	return GWSTATUS_CONTINUE_GAME;
+    m_player->doSomething();
+
+//    removeDeadGameObjects(); // delete dead game objects
+    if(m_bonus > 0) m_bonus--;
+//    if (thePlayerHasCollectedAllOfTheCrystalsOnTheLevel())
+//        exposeTheExitInTheMaze();
+
+    return GWSTATUS_CONTINUE_GAME;
 }
 
 void StudentWorld::cleanUp() {
+    delete m_player;
     for(auto it = m_actors.begin(); it != m_actors.end(); it++) {
         delete *it;
     }
+}
+
+
+// TODO: FIX
+bool StudentWorld::isMovable(int x, int y) const {
+    for(auto it = m_actors.begin(); it != m_actors.end(); it++) {
+        if((*it)->isOpaque && (*it)->getX() == x && (*it)->getY() == y) {
+            return false;
+        }
+    }
+
+    return true;
 }

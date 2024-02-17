@@ -4,47 +4,48 @@
 // Students:  Add code to this file, Actor.h, StudentWorld.h, and StudentWorld.cpp
 
 // MARK: Actor
-Actor::Actor(StudentWorld* world, int imageID, double startX, double startY, int dir, double size)
-: GraphObject(imageID, startX, startY, dir, size), m_world(world) {
-}
+Actor::Actor(StudentWorld* world, int imageID, double startX, double startY, bool opaque, int dir, double size)
+: GraphObject(imageID, startX, startY, dir, size), m_world(world), isOpaque(opaque) {}
 
-void Actor::doSomething() {}
+// MARK: Attackable
+Attackable::Attackable(StudentWorld* world, int imageID, int hp, double startX, double startY, bool opaque, int dir, double size)
+: Actor(world, imageID, startX, startY, dir, size, opaque), m_hp(hp) {}
 
-
-// MARK: WALL
+// MARK: Wall
 Wall::Wall(StudentWorld* world, double startX, double startY)
-: Actor(world, IID_WALL, startX, startY) {
+: Actor(world, IID_WALL, startX,  startY, true) {
     setVisible(true);
 }
 
-//// MARK: AVATAR
-//Avatar::Avatar(StudentWorld* world, double startX, double startY, int dir, double size)
-//: Actor(world, IID_PLAYER, startX, startY, right, size) {
-//    setVisible(true);
-//    m_hitpoints = 20;
-//    m_peas = 20;
-//}
-//
-//void Avatar::doSomething() {
-//    if(m_hitpoints <= 0) {
-//        return;
-//    }
-//
-//    int ch;
-//    if (getWorld()->getKey(ch)) {
-//        switch (ch) {
-//            case KEY_PRESS_LEFT:
-//                setDirection(left);
-//                moveForward();
-//                break;
-//            case KEY_PRESS_RIGHT:
-//                setDirection(right);
-//                moveForward();
-//                break;
-//            case KEY_PRESS_SPACE:
-//                // TODO: shoot pea
-//                break;
-//        }
-//    }
-//    // TODO: MOVE
-//}
+// MARK: Avatar
+Avatar::Avatar(StudentWorld* world, double startX, double startY)
+: Attackable(world, IID_PLAYER, 20, startX, startY, true, right) {
+    setVisible(true);
+    m_peas = 20;
+}
+
+void Avatar::doSomething() {
+    if(hitpoints() <= 0) return;
+
+    int ch;
+    if(getWorld()->getKey(ch)) {
+        switch (ch) {
+            case KEY_PRESS_LEFT:
+                setDirection(left);
+                if(getWorld()->isMovable(getX() - 1, getY())) moveForward();
+                break;
+            case KEY_PRESS_RIGHT:
+                setDirection(right);
+                if(getWorld()->isMovable(getX() + 1, getY())) moveForward();
+                break;
+            case KEY_PRESS_UP:
+                setDirection(up);
+                if(getWorld()->isMovable(getX(), getY() + 1)) moveForward();
+                break;
+            case KEY_PRESS_DOWN:
+                setDirection(down);
+                if(getWorld()->isMovable(getX(), getY() - 1)) moveForward();
+                break;
+        }
+    }
+}
