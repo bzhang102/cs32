@@ -5,7 +5,7 @@
 
 // MARK: Actor
 Actor::Actor(StudentWorld* world, int imageID, double startX, double startY, bool opaque, int dir, double size)
-: GraphObject(imageID, startX, startY, dir, size), m_world(world), isOpaque(opaque) {}
+: GraphObject(imageID, startX, startY, dir, size), isOpaque(opaque), m_world(world) {}
 
 // MARK: Attackable
 Attackable::Attackable(StudentWorld* world, int imageID, int hp, double startX, double startY, bool opaque, int dir, double size)
@@ -17,16 +17,13 @@ Wall::Wall(StudentWorld* world, double startX, double startY)
     setVisible(true);
 }
 
-// MARK: Avatar
-Avatar::Avatar(StudentWorld* world, double startX, double startY)
+// MARK: Player
+Player::Player(StudentWorld* world, double startX, double startY)
 : Attackable(world, IID_PLAYER, 20, startX, startY, true, right) {
     setVisible(true);
-    m_peas = 20;
 }
 
-void Avatar::doSomething() {
-    if(hitpoints() <= 0) return;
-
+void Player::doSomething() {
     int ch;
     if(getWorld()->getKey(ch)) {
         switch (ch) {
