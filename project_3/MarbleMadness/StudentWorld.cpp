@@ -84,7 +84,7 @@ bool StudentWorld::isMovable(double x, double y) const {
 
     // occupied by another opaque entity
     for(auto it = m_actors.begin(); it != m_actors.end(); it++) {
-        if((*it)->isOpaque && (*it)->getX() == x && (*it)->getY() == y)) {
+        if((*it)->isOpaque && (*it)->getX() == x && (*it)->getY() == y) {
             return false;
         }
     }
