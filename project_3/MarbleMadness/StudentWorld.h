@@ -8,7 +8,7 @@
 // Students:  Add code to this file, StudentWorld.cpp, Actor.h, and Actor.cpp
 
 class Actor;
-class Avatar;
+class Player;
 
 class StudentWorld : public GameWorld {
 public:
@@ -18,10 +18,9 @@ public:
     virtual int move();
     virtual void cleanUp();
 
-    bool isMovable(int x, int y) const;
+    bool isMovable(double x, double y) const;
 private:
-    int m_bonus;
-    Avatar* m_player;
+    Player* m_player;
     std::vector<Actor*> m_actors;
 };
 

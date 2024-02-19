@@ -8,13 +8,10 @@
 
 class Actor : public GraphObject {
 public:
-    Actor(StudentWorld* world, int imageID, double startX, double startY, bool opaque = false, int dir = 0, double size = 1.0);
+    Actor(StudentWorld* world, int imageID, double startX, double startY, bool opaque = false, int dir = right);
     virtual void doSomething() {};
 
-    StudentWorld* getWorld() const {
-        return m_world;
-    }
-
+    StudentWorld* getWorld() const { return m_world; }
     const bool isOpaque;
 private:
     StudentWorld* m_world;
@@ -22,11 +19,9 @@ private:
 
 class Attackable : public Actor {
 public:
-    Attackable(StudentWorld* world, int imageID, int hp, double startX, double startY,  bool opaque = false, int dir = 0, double size = 1.0);
+    Attackable(StudentWorld* world, int imageID, int hp, double startX, double startY,  bool opaque = false, int dir = right);
 
-    int hitpoints() const {
-        return m_hp;
-    }
+    int hitpoints() const { return m_hp; }
 private:
     int m_hp;
 };
@@ -37,12 +32,11 @@ public:
 private:
 };
 
-class Avatar : public Attackable {
+class Player : public Attackable {
 public:
-    Avatar(StudentWorld* world, double startX, double startY);
+    Player(StudentWorld* world, double startX, double startY);
     virtual void doSomething();
 private:
-    int m_peas;
 };
 
 #endif // ACTOR_H_
