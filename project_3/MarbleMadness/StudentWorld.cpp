@@ -79,8 +79,12 @@ void StudentWorld::cleanUp() {
 }
 
 bool StudentWorld::isMovable(double x, double y) const {
+    // out of bounds
+    if(x < 0 || x >= VIEW_WIDTH || y < 0 || y >= VIEW_WIDTH) return false;
+
+    // occupied by another opaque entity
     for(auto it = m_actors.begin(); it != m_actors.end(); it++) {
-        if((*it)->isOpaque && round((*it)->getX()) == round(x) && round((*it)->getY()) == round(y)) {
+        if((*it)->isOpaque && (*it)->getX() == x && (*it)->getY() == y)) {
             return false;
         }
     }
