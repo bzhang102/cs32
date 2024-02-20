@@ -6,23 +6,22 @@
 
 // Students:  Add code to this file, Actor.cpp, StudentWorld.h, and StudentWorld.cpp
 
+void findNewCoordinates(double& x, double& y, int dir, int units);
+
 class Actor : public GraphObject {
 public:
-    Actor(StudentWorld* world, int imageID, double startX, double startY, bool opaque = false, int dir = right);
-    virtual void doSomething() {};
+    Actor(StudentWorld* world, int imageID, int hp, double startX, double startY, bool opaque = false, int dir = right);
+    virtual void doSomething() {}
+    virtual void getAttacked() {}
+    virtual bool getPushed(int dir) { return false; }
 
-    StudentWorld* getWorld() const { return m_world; }
+    StudentWorld* world() const { return m_world; }
+    int hp() const { return m_hp; }
+    void sethp(int newhp) { m_hp = newhp; }
+
     const bool isOpaque;
 private:
     StudentWorld* m_world;
-};
-
-class Attackable : public Actor {
-public:
-    Attackable(StudentWorld* world, int imageID, int hp, double startX, double startY,  bool opaque = false, int dir = right);
-
-    int hitpoints() const { return m_hp; }
-private:
     int m_hp;
 };
 
@@ -32,11 +31,18 @@ public:
 private:
 };
 
-class Player : public Attackable {
+class Player : public Actor {
 public:
     Player(StudentWorld* world, double startX, double startY);
     virtual void doSomething();
+    virtual void getAttacked() { sethp(hp() - 2); }
 private:
 };
 
+class Marble : public Actor {
+public:
+    Marble(StudentWorld* world, double startX, double startY);
+    virtual void getAttacked() { sethp(hp() - 2); }
+    virtual bool getPushed(int dir);
+};
 #endif // ACTOR_H_

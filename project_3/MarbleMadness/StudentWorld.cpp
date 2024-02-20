@@ -12,15 +12,21 @@ GameWorld* createStudentWorld(string assetPath) {
 // Students:  Add code to this file, StudentWorld.h, Actor.h, and Actor.cpp
 
 StudentWorld::StudentWorld(string assetPath)
-: GameWorld(assetPath) {}
+: GameWorld(assetPath), m_player(nullptr), m_bonus(1000) {
+    
+}
 
 StudentWorld::~StudentWorld() {
     cleanUp();
 }
 
 int StudentWorld::init() {
-    // MARK: Current level
-    string levelPath = "level00.txt";
+    // format levelPath string
+    string levelPath;
+    if(getLevel() < 9)
+        levelPath = "level0" + to_string(getLevel()) + ".txt";
+    else
+        levelPath = "level" + to_string(getLevel()) + ".txt";
 
     // create level
     Level lev(assetPath());
@@ -30,8 +36,7 @@ int StudentWorld::init() {
         cerr << "Could not find " + levelPath + " data file" << endl;
     else if (result == Level::load_fail_bad_format)
         cerr << "Your level was improperly formatted" << endl;
-    else if (result == Level::load_success)
-    {
+    else if (result == Level::load_success) {
         // load actors by square
         for(int x = 0; x < VIEW_WIDTH; x++) {
             for(int y = 0; y < VIEW_HEIGHT; y++) {
@@ -45,6 +50,8 @@ int StudentWorld::init() {
                     case Level::wall:
                         m_actors.push_back(new Wall(this, x, y));
                         break;
+                    case Level::marble:
+                        m_actors.push_back(new Marble(this, x, y));
                     default:
                         break;
                 }
@@ -58,11 +65,32 @@ int StudentWorld::init() {
 int StudentWorld::move() {
     // tell player to do something
     m_player->doSomething();
+    // TODO: player stepped on exit
 
     // tell actors do do something
     for(auto it = m_actors.begin(); it != m_actors.end(); it++) {
         (*it)->doSomething();
+        if(m_player->hp() <= 0) {
+            return GWSTATUS_PLAYER_DIED;
+        }
     }
+
+    // remove dead actors
+    for(auto it = m_actors.begin(); it != m_actors.end();) {
+        if((*it)->hp() <= 0) {
+            m_actors.erase(it);
+        } else {
+            it++;
+        }
+    }
+
+    // decrement bonus points
+    if(m_bonus > 0) m_bonus--;
+
+    // update display text
+    setDisplayText();
+
+    // remove all dead actors
     return GWSTATUS_CONTINUE_GAME;
 }
 
@@ -78,16 +106,37 @@ void StudentWorld::cleanUp() {
     }
 }
 
-bool StudentWorld::isMovable(double x, double y) const {
-    // out of bounds
-    if(x < 0 || x >= VIEW_WIDTH || y < 0 || y >= VIEW_WIDTH) return false;
+void StudentWorld::setDisplayText() {
+    // TODO: formatting using stringstreams
+}
 
-    // occupied by another opaque entity
-    for(auto it = m_actors.begin(); it != m_actors.end(); it++) {
-        if((*it)->isOpaque && (*it)->getX() == x && (*it)->getY() == y) {
-            return false;
+bool StudentWorld::moveActor(Actor* actor, double x, double y, int dir) const {
+    // check if out of bounds
+    if(x < 0 || y < 0 || x >= VIEW_WIDTH || y >= VIEW_HEIGHT) return false;
+    
+    // see if square is occupied
+    Actor* actorAtCoords = actorHere(x, y);
+    if(actorAtCoords != nullptr) {
+        // attempt to push
+        if(actorAtCoords->getPushed(dir)) {
+            // obstacle pushed
+            actor->moveTo(x, y);
+            return true;
         }
+        //cannot be pushed
+        return false;
     }
 
+    // unoccupied square; move
+    actor->moveTo(x, y);
     return true;
+}
+
+Actor* StudentWorld::actorHere(double x, double y) const {
+    for(auto it = m_actors.begin(); it != m_actors.end(); it++) {
+        if((*it)->getX() == x && (*it)->getY() == y) {
+            return *it;
+        }
+    }
+    return nullptr;
 }
