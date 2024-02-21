@@ -11,15 +11,6 @@ GameWorld* createStudentWorld(string assetPath) {
 
 // Students:  Add code to this file, StudentWorld.h, Actor.h, and Actor.cpp
 
-StudentWorld::StudentWorld(string assetPath)
-: GameWorld(assetPath), m_player(nullptr), m_bonus(1000) {
-    
-}
-
-StudentWorld::~StudentWorld() {
-    cleanUp();
-}
-
 int StudentWorld::init() {
     // format levelPath string
     string levelPath;
@@ -56,6 +47,25 @@ int StudentWorld::init() {
                     case Level::pit:
                         m_actors.push_back(new Pit(this, x, y));
                         break;
+                    case Level::crystal:
+                        m_actors.push_back(new Crystal(this, x, y));
+                        m_crystalsLeft++;
+                        break;
+                    case Level::exit: {
+                        Actor* exit = new Exit(this, x, y);
+                        exit->setVisible(false);
+                        m_actors.push_back(exit);
+                        break;
+                    }
+                    case Level::extra_life:
+                        m_actors.push_back(new ExtraLife(this, x, y));
+                        break;
+                    case Level::restore_health:
+                        m_actors.push_back(new RestoreHealth(this, x, y));
+                        break;
+                    case Level::ammo:
+                        m_actors.push_back(new Ammo(this, x, y));
+                        break;
                     default:
                         break;
                 }
@@ -69,15 +79,19 @@ int StudentWorld::init() {
 int StudentWorld::move() {
     // tell player to do something
     m_player->doSomething();
-    // TODO: player stepped on exit
 
     // tell actors do do something
     for(auto it = m_actors.begin(); it != m_actors.end(); it++) {
         (*it)->doSomething();
+
+        // check if player died
         if(m_player->hp() <= 0) {
             playSound(SOUND_PLAYER_DIE);
             return GWSTATUS_PLAYER_DIED;
         }
+
+        // check if player exited
+        if(m_exited) return GWSTATUS_FINISHED_LEVEL;
     }
 
     // remove dead actors

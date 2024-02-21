@@ -4,9 +4,6 @@
 // Students:  Add code to this file, Actor.h, StudentWorld.h, and StudentWorld.cpp
 
 // MARK: Actor
-Actor::Actor(StudentWorld* world, int imageID, int hp, double startX, double startY, int opacity, int dir)
-: GraphObject(imageID, startX, startY, dir, 1.0), m_world(world), m_hp(hp), m_opacity(opacity) {}
-
 void Actor::findNewCoordinates(double& x, double& y, int dir, int units) {
     switch(dir) {
         case GraphObject::up:
@@ -24,18 +21,7 @@ void Actor::findNewCoordinates(double& x, double& y, int dir, int units) {
     }
 }
 
-// MARK: Wall
-Wall::Wall(StudentWorld* world, double startX, double startY)
-: Actor(world, IID_WALL, 100, startX,  startY, 3) {
-    setVisible(true);
-}
-
 // MARK: Player
-Player::Player(StudentWorld* world, double startX, double startY)
-: Actor(world, IID_PLAYER, 20, startX, startY, 3), m_peas(20) {
-    setVisible(true);
-}
-
 void Player::doSomething() {
     // if dead do nothing
     if(hp() <= 0) return;
@@ -81,11 +67,6 @@ void Player::shoot() {
 }
 
 // MARK: Marble
-Marble::Marble(StudentWorld* world, double startX, double startY)
-: Actor(world, IID_MARBLE, 10, startX, startY, 1) {
-    setVisible(true);
-}
-
 bool Marble::getPushed(int dir, int pusherOpacity) {
     // only pushable by player
     if(pusherOpacity < 3) return false;
@@ -107,11 +88,6 @@ bool Marble::getPushed(int dir, int pusherOpacity) {
 }
 
 // MARK: Pea
-Pea::Pea(StudentWorld* world, double startX, double startY, int dir) 
-: Actor(world, IID_PEA, 100, startX, startY, 0, dir) {
-    setVisible(true);
-}
-
 void Pea::doSomething() {
     // if dead do nothing
     if(hp() <= 0) return;
@@ -142,11 +118,6 @@ void Pea::doSomething() {
 }
 
 // MARK: Pit
-Pit::Pit(StudentWorld* world, double startX, double startY)
-: Actor(world, IID_PIT, 100, startX, startY, 2) {
-    setVisible(true);
-}
-
 void Pit::doSomething() {
     // if dead do nothing
     if(hp() <= 0) return;
@@ -160,5 +131,74 @@ void Pit::doSomething() {
 }
 
 bool Pit::getPushed(int dir, int pusherOpacity) {
+    // allows actors with opacity less than pit to move over pit
     return (pusherOpacity <= 1) ? true : false;
 }
+
+// MARK: Pickup
+bool Pickup::playerHere() {
+    Player* player = world()->player();
+    return (player->getX() == getX() && player->getY() == getY()) ? true : false;
+}
+
+void Pickup::doSomething() {
+    // if dead do nothing
+    if(hp() <= 0) return;
+
+    // perform action if player hits pickup
+    if(playerHere()) {
+        sethp(0);
+        pickUp();
+    }
+}
+
+// MARK: Crystal
+void Crystal::pickUp() {
+    world()->increaseScore(50);
+    world()->collectCrystal();
+    world()->playSound(SOUND_GOT_GOODIE);
+}
+
+// MARK: Exit
+void Exit::doSomething() {
+    // if dead do nothing
+    if(hp() <= 0) return;
+
+    // reveal exit if all crystals collected
+    if(world()->revealExit() && !m_revealed) {
+        world()->playSound(SOUND_REVEAL_EXIT);
+        setVisible(true);
+        m_revealed = true;
+    }
+
+    // perform action if player hits pickup
+    if(playerHere() && m_revealed) pickUp();
+}
+
+void Exit::pickUp() {
+    world()->playSound(SOUND_FINISHED_LEVEL);
+    world()->increaseScore(2000);
+    world()->exit();
+}
+
+// MARK: Extra Life
+void ExtraLife::pickUp() {
+    world()->increaseScore(1000);
+    world()->playSound(SOUND_GOT_GOODIE);
+    world()->incLives();
+}
+
+// MARK: Restore Health
+void RestoreHealth::pickUp() {
+    world()->increaseScore(500);
+    world()->playSound(SOUND_GOT_GOODIE);
+    world()->player()->sethp(20);
+}
+
+// MARK: Ammo
+void Ammo::pickUp() {
+    world()->increaseScore(100);
+    world()->playSound(SOUND_GOT_GOODIE);
+    world()->player()->incPeas(20);
+}
+
