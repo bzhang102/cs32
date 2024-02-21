@@ -52,6 +52,10 @@ int StudentWorld::init() {
                         break;
                     case Level::marble:
                         m_actors.push_back(new Marble(this, x, y));
+                        break;
+                    case Level::pit:
+                        m_actors.push_back(new Pit(this, x, y));
+                        break;
                     default:
                         break;
                 }
@@ -112,31 +116,29 @@ void StudentWorld::setDisplayText() {
     // TODO: formatting using stringstreams
 }
 
-bool StudentWorld::moveActor(Actor* actor, double x, double y, int dir) const {
+void StudentWorld::moveActor(Actor* actor, double x, double y, int dir) const {
     // check if out of bounds
-    if(x < 0 || y < 0 || x >= VIEW_WIDTH || y >= VIEW_HEIGHT) return false;
+    if(x < 0 || y < 0 || x >= VIEW_WIDTH || y >= VIEW_HEIGHT) return;
     
     // see if square is occupied
-    Actor* actorAtCoords = actorHere(x, y);
-    if(actorAtCoords != nullptr) {
+    Actor* actorOnSquare = actorHere(nullptr, x, y);
+    if(actorOnSquare != nullptr) {
         // attempt to push
-        if(actorAtCoords->getPushed(dir)) {
+        if(actorOnSquare->getPushed(dir, actor->opacity())) {
             // obstacle pushed
             actor->moveTo(x, y);
-            return true;
         }
         //cannot be pushed
-        return false;
+        return;
     }
 
     // unoccupied square; move
     actor->moveTo(x, y);
-    return true;
 }
 
-Actor* StudentWorld::actorHere(double x, double y) const {
+Actor* StudentWorld::actorHere(Actor* caller, double x, double y) const {
     for(auto it = m_actors.begin(); it != m_actors.end(); it++) {
-        if((*it)->isOpaque && (*it)->getX() == x && (*it)->getY() == y) {
+        if((*it)->getX() == x && (*it)->getY() == y && (*it) != caller) {
             return *it;
         }
     }

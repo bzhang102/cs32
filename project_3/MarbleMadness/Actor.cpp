@@ -3,7 +3,11 @@
 
 // Students:  Add code to this file, Actor.h, StudentWorld.h, and StudentWorld.cpp
 
-void findNewCoordinates(double& x, double& y, int dir, int units) {
+// MARK: Actor
+Actor::Actor(StudentWorld* world, int imageID, int hp, double startX, double startY, int opacity, int dir)
+: GraphObject(imageID, startX, startY, dir, 1.0), m_world(world), m_hp(hp), m_opacity(opacity) {}
+
+void Actor::findNewCoordinates(double& x, double& y, int dir, int units) {
     switch(dir) {
         case GraphObject::up:
             y += units;
@@ -20,19 +24,15 @@ void findNewCoordinates(double& x, double& y, int dir, int units) {
     }
 }
 
-// MARK: Actor
-Actor::Actor(StudentWorld* world, int imageID, int hp, double startX, double startY, bool opaque, int dir)
-: GraphObject(imageID, startX, startY, dir, 1.0), m_hp(hp), isOpaque(opaque), m_world(world) {}
-
 // MARK: Wall
 Wall::Wall(StudentWorld* world, double startX, double startY)
-: Actor(world, IID_WALL, 100, startX,  startY, true) {
+: Actor(world, IID_WALL, 100, startX,  startY, 3) {
     setVisible(true);
 }
 
 // MARK: Player
 Player::Player(StudentWorld* world, double startX, double startY)
-: Actor(world, IID_PLAYER, 20, startX, startY, true), m_peas(20) {
+: Actor(world, IID_PLAYER, 20, startX, startY, 3), m_peas(20) {
     setVisible(true);
 }
 
@@ -82,19 +82,22 @@ void Player::shoot() {
 
 // MARK: Marble
 Marble::Marble(StudentWorld* world, double startX, double startY)
-: Actor(world, IID_MARBLE, 10, startX, startY, true) {
+: Actor(world, IID_MARBLE, 10, startX, startY, 1) {
     setVisible(true);
 }
 
-bool Marble::getPushed(int dir) {
+bool Marble::getPushed(int dir, int pusherOpacity) {
+    // only pushable by player
+    if(pusherOpacity < 3) return false;
+
     // find target coordinates
     double x = getX();
     double y = getY();
     findNewCoordinates(x, y, dir, 1);
 
     // square unoccupied
-    Actor* actorAtCoords = world()->actorHere(x, y);
-    if(actorAtCoords == nullptr) {
+    Actor* actorAtCoords = world()->actorHere(this, x, y);
+    if(actorAtCoords == nullptr || actorAtCoords->opacity() == 2) {
         world()->moveActor(this, x, y, dir);
         return true;
     }
@@ -105,7 +108,7 @@ bool Marble::getPushed(int dir) {
 
 // MARK: Pea
 Pea::Pea(StudentWorld* world, double startX, double startY, int dir) 
-: Actor(world, IID_PEA, 100, startX, startY, false, dir) {
+: Actor(world, IID_PEA, 100, startX, startY, 0, dir) {
     setVisible(true);
 }
 
@@ -116,9 +119,9 @@ void Pea::doSomething() {
     double x = getX();
     double y = getY();
 
-    // if square occupied, attack
-    Actor* actorOnSquare = world()->actorHere(x, y);
-    if(actorOnSquare != nullptr) {
+    // if square occupied by opaque actor, attack
+    Actor* actorOnSquare = world()->actorHere(this, x, y);
+    if(actorOnSquare != nullptr && (actorOnSquare->opacity() == 1 || actorOnSquare->opacity() == 3)) {
         actorOnSquare->getAttacked();
         sethp(0);
         return;
@@ -127,12 +130,35 @@ void Pea::doSomething() {
     // find new coordinates
     findNewCoordinates(x, y, getDirection(), 1);
 
-    actorOnSquare = world()->actorHere(x, y);
-    if(actorOnSquare != nullptr) {
+    // if non-transparent actor is found on new square
+    actorOnSquare = world()->actorHere(this, x, y);
+    if(actorOnSquare != nullptr && (actorOnSquare->opacity() == 1 || actorOnSquare->opacity() == 3)) {
         actorOnSquare->getAttacked();
         sethp(0);
         return;
     }
 
     world()->moveActor(this, x, y, getDirection());
+}
+
+// MARK: Pit
+Pit::Pit(StudentWorld* world, double startX, double startY)
+: Actor(world, IID_PIT, 100, startX, startY, 2) {
+    setVisible(true);
+}
+
+void Pit::doSomething() {
+    // if dead do nothing
+    if(hp() <= 0) return;
+
+    // Detect Marble and Swallow
+    Actor* actorOnSquare = world()->actorHere(this, getX(), getY());
+    if(actorOnSquare != nullptr && actorOnSquare->opacity() == 1) {
+        sethp(0);
+        actorOnSquare->sethp(0);
+    }
+}
+
+bool Pit::getPushed(int dir, int pusherOpacity) {
+    return (pusherOpacity <= 1) ? true : false;
 }

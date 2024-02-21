@@ -20,8 +20,8 @@ public:
 
     void setDisplayText();
     void addActor(Actor* actor) { m_actors.push_front(actor); }
-    bool moveActor(Actor* actor, double x, double y, int dir) const;
-    Actor* actorHere(double x, double y) const;
+    void moveActor(Actor* actor, double x, double y, int dir) const;
+    Actor* actorHere(Actor* caller, double x, double y) const;
 private:
     Player* m_player;
     std::list<Actor*> m_actors;
