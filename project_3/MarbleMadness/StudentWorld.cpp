@@ -71,6 +71,7 @@ int StudentWorld::move() {
     for(auto it = m_actors.begin(); it != m_actors.end(); it++) {
         (*it)->doSomething();
         if(m_player->hp() <= 0) {
+            playSound(SOUND_PLAYER_DIE);
             return GWSTATUS_PLAYER_DIED;
         }
     }
@@ -78,7 +79,8 @@ int StudentWorld::move() {
     // remove dead actors
     for(auto it = m_actors.begin(); it != m_actors.end();) {
         if((*it)->hp() <= 0) {
-            m_actors.erase(it);
+            delete(*it);
+            it = m_actors.erase(it);
         } else {
             it++;
         }
@@ -98,7 +100,7 @@ void StudentWorld::cleanUp() {
     // delete player
     delete m_player;
     m_player = nullptr;
-
+    
     //delete actors
     for(auto it = m_actors.begin(); it != m_actors.end(); it++) {
         delete *it;
@@ -134,7 +136,7 @@ bool StudentWorld::moveActor(Actor* actor, double x, double y, int dir) const {
 
 Actor* StudentWorld::actorHere(double x, double y) const {
     for(auto it = m_actors.begin(); it != m_actors.end(); it++) {
-        if((*it)->getX() == x && (*it)->getY() == y) {
+        if((*it)->isOpaque && (*it)->getX() == x && (*it)->getY() == y) {
             return *it;
         }
     }

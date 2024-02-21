@@ -32,11 +32,12 @@ Wall::Wall(StudentWorld* world, double startX, double startY)
 
 // MARK: Player
 Player::Player(StudentWorld* world, double startX, double startY)
-: Actor(world, IID_PLAYER, 20, startX, startY, true) {
+: Actor(world, IID_PLAYER, 20, startX, startY, true), m_peas(20) {
     setVisible(true);
 }
 
 void Player::doSomething() {
+    // if dead do nothing
     if(hp() <= 0) return;
     
     int dir;
@@ -53,6 +54,11 @@ void Player::doSomething() {
                 break;
             case KEY_PRESS_RIGHT:
                 dir = right;
+                break;
+            case KEY_PRESS_SPACE:
+                shoot();
+            default:
+                return;
         }
         setDirection(dir);
 
@@ -63,6 +69,14 @@ void Player::doSomething() {
 
         // attempt to move
         world()->moveActor(this, x, y, dir);
+    }
+}
+
+void Player::shoot() {
+    if(m_peas > 0) {
+        world()->addActor(new Pea(world(), getX(), getY(), getDirection()));
+        world()->playSound(SOUND_PLAYER_FIRE);
+        m_peas--;
     }
 }
 
@@ -87,4 +101,38 @@ bool Marble::getPushed(int dir) {
     
     // square occupied
     return false;
+}
+
+// MARK: Pea
+Pea::Pea(StudentWorld* world, double startX, double startY, int dir) 
+: Actor(world, IID_PEA, 100, startX, startY, false, dir) {
+    setVisible(true);
+}
+
+void Pea::doSomething() {
+    // if dead do nothing
+    if(hp() <= 0) return;
+
+    double x = getX();
+    double y = getY();
+
+    // if square occupied, attack
+    Actor* actorOnSquare = world()->actorHere(x, y);
+    if(actorOnSquare != nullptr) {
+        actorOnSquare->getAttacked();
+        sethp(0);
+        return;
+    }
+
+    // find new coordinates
+    findNewCoordinates(x, y, getDirection(), 1);
+
+    actorOnSquare = world()->actorHere(x, y);
+    if(actorOnSquare != nullptr) {
+        actorOnSquare->getAttacked();
+        sethp(0);
+        return;
+    }
+
+    world()->moveActor(this, x, y, getDirection());
 }

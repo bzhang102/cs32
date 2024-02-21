@@ -19,6 +19,7 @@ public:
     virtual void cleanUp();
 
     void setDisplayText();
+    void addActor(Actor* actor) { m_actors.push_front(actor); }
     bool moveActor(Actor* actor, double x, double y, int dir) const;
     Actor* actorHere(double x, double y) const;
 private:
