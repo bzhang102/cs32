@@ -47,24 +47,11 @@ int StudentWorld::init() {
                     case Level::pit:
                         m_actors.push_back(new Pit(this, x, y));
                         break;
-                    case Level::crystal:
-                        m_actors.push_back(new Crystal(this, x, y));
-                        m_crystalsLeft++;
+                    case Level::vert_ragebot:
+                        m_actors.push_back(new RageBot(this, x, y, GraphObject::up));
                         break;
-                    case Level::exit: {
-                        Actor* exit = new Exit(this, x, y);
-                        exit->setVisible(false);
-                        m_actors.push_back(exit);
-                        break;
-                    }
-                    case Level::extra_life:
-                        m_actors.push_back(new ExtraLife(this, x, y));
-                        break;
-                    case Level::restore_health:
-                        m_actors.push_back(new RestoreHealth(this, x, y));
-                        break;
-                    case Level::ammo:
-                        m_actors.push_back(new Ammo(this, x, y));
+                    case Level::horiz_ragebot:
+                        m_actors.push_back(new RageBot(this, x, y, GraphObject::right));
                         break;
                     default:
                         break;
@@ -90,8 +77,7 @@ int StudentWorld::move() {
             return GWSTATUS_PLAYER_DIED;
         }
 
-        // check if player exited
-        if(m_exited) return GWSTATUS_FINISHED_LEVEL;
+        // TODO: check if player exited
     }
 
     // remove dead actors
@@ -106,6 +92,9 @@ int StudentWorld::move() {
 
     // decrement bonus points
     if(m_bonus > 0) m_bonus--;
+
+    // increment current tick
+    m_curTick++;
 
     // update display text
     setDisplayText();
@@ -126,31 +115,176 @@ void StudentWorld::cleanUp() {
     }
 }
 
+// MARK: Helper Functions
+
 void StudentWorld::setDisplayText() {
     // TODO: formatting using stringstreams
 }
 
-void StudentWorld::moveActor(Actor* actor, double x, double y, int dir) const {
-    // check if out of bounds
-    if(x < 0 || y < 0 || x >= VIEW_WIDTH || y >= VIEW_HEIGHT) return;
-    
-    // see if square is occupied
-    Actor* actorOnSquare = actorHere(nullptr, x, y);
-    if(actorOnSquare != nullptr) {
-        // attempt to push
-        if(actorOnSquare->getPushed(dir, actor->opacity())) {
-            // obstacle pushed
-            actor->moveTo(x, y);
-        }
-        //cannot be pushed
-        return;
+void StudentWorld::targetCoords(double& x, double& y, int dir, int units) const {
+    switch(dir) {
+        case GraphObject::up:
+            y += units;
+            break;
+        case GraphObject::down:
+            y -= units;
+            break;
+        case GraphObject::right:
+            x += units;
+            break;
+        case GraphObject::left:
+            x -= units;
+            break;
     }
-
-    // unoccupied square; move
-    actor->moveTo(x, y);
 }
 
-Actor* StudentWorld::actorHere(Actor* caller, double x, double y) const {
+void StudentWorld::movePlayer(int dir) const {
+    // get target location
+    double x = m_player->getX();
+    double y = m_player->getY();
+    targetCoords(x, y, dir, 1);
+
+    // iterate through all actors
+    for(auto it = m_actors.begin(); it != m_actors.end(); it++) {
+        // if an actor is here
+        if((*it)->getX() == x && (*it)->getY() == y) {
+            // if actor is transparent to players
+            if((*it)->playerTransparent()) continue;
+
+            // if actor is pushable
+            if((*it)->pushable()) {
+                // get coords of space to push into
+                double nextX = x;
+                double nextY = y;
+                targetCoords(nextX, nextY, dir, 1);
+                Actor* actorAtTarget = actorAtCoords(nullptr, nextX, nextY);
+                // if nothing at target coords, or marble transparent at target coords
+                if(actorAtTarget == nullptr || actorAtTarget->marbleTransparent()) {
+                    (*it)->moveTo(nextX, nextY);
+                    m_player->moveTo(x, y);
+                }
+            }
+            return;
+        }
+    }
+    // valid movement, move player
+    m_player->moveTo(x, y);
+}
+
+void StudentWorld::movePea(Pea* pea, int dir) const {
+    // get current location
+    double x = pea->getX();
+    double y = pea->getY();
+    
+    if(m_player->getX() == x && m_player->getY() == y) {
+        m_player->takeDamage();
+        pea->sethp(0);
+        pea->setVisible(false);
+        return;
+    }
+    for(auto it = m_actors.begin(); it != m_actors.end(); it++) {
+        if((*it)->getX() == x && (*it)->getY() == y) {
+            if(!(*it)->peaTransparent()) {
+                (*it)->takeDamage();
+                pea->sethp(0);
+                pea->setVisible(false);
+                return;
+            }
+        }
+    }
+
+    targetCoords(x, y, dir, 1);
+    pea->moveTo(x, y);
+
+    if(m_player->getX() == x && m_player->getY() == y) {
+        m_player->takeDamage();
+        pea->sethp(0);
+        pea->setVisible(false);
+    }
+    for(auto it = m_actors.begin(); it != m_actors.end(); it++) {
+        if((*it)->getX() == x && (*it)->getY() == y) {
+            if(!(*it)->peaTransparent()) {
+                (*it)->takeDamage();
+                pea->sethp(0);
+                pea->setVisible(false);
+                return;
+            }
+        }
+    }
+}
+
+void StudentWorld::moveRageBot(RageBot* bot, int dir) const {
+    double x = bot->getX();
+    double y = bot->getY();
+    targetCoords(x, y, dir, 1);
+
+    for(auto it = m_actors.begin(); it != m_actors.end(); it++) {
+        // if an actor is here
+        if((*it)->getX() == x && (*it)->getY() == y) {
+            // if actor is transparent to robots
+            if((*it)->robotTransparent()) {
+                continue;
+            } else {
+                bot->setDirection((dir + 180) % 360);
+                return;
+            }
+        }
+    }
+    // valid movement, move bot
+    bot->moveTo(x, y);
+}
+
+bool StudentWorld::canShootAtPlayer(RageBot* bot, int dir) const {
+    double x = bot->getX();
+    double y = bot->getY();
+
+    int lower, upper;
+    switch(dir) {
+        case GraphObject::left:
+            lower = m_player->getX();
+            upper = x;
+            if(y != m_player->getY() || x < lower) return false;
+            for(auto it = m_actors.begin(); it != m_actors.end(); it++) {
+                if((*it)->getX() > lower && (*it)->getX() < upper && !(*it)->peaTransparent()) {
+                    return false;
+                }
+            }
+            break;
+        case GraphObject::right:
+            lower = x;
+            upper = m_player->getX();
+            if(y != m_player->getY() || x > upper) return false;
+            for(auto it = m_actors.begin(); it != m_actors.end(); it++) {
+                if((*it)->getY() == y && (*it)->getX() > lower && (*it)->getX() < upper && !(*it)->peaTransparent()) {
+                    return false;
+                }
+            }
+            break;
+        case GraphObject::up:
+            lower = y;
+            upper = m_player->getY();
+            if(x != m_player->getX() || y > upper) return false;
+            for(auto it = m_actors.begin(); it != m_actors.end(); it++) {
+                if((*it)->getY() > lower && (*it)->getY() < upper && !(*it)->peaTransparent()) {
+                    return false;
+                }
+            }
+            break;
+        case GraphObject::down:
+            lower = m_player->getY();
+            upper = y;
+            if(y != m_player->getY() || y < lower) return false;
+            for(auto it = m_actors.begin(); it != m_actors.end(); it++) {
+                if((*it)->getY() > lower && (*it)->getY() < upper && !(*it)->peaTransparent()) {
+                    return false;
+                }
+            }
+    }
+    return true;
+}
+
+
+Actor* StudentWorld::actorAtCoords(Actor* caller, double x, double y) const {
     for(auto it = m_actors.begin(); it != m_actors.end(); it++) {
         if((*it)->getX() == x && (*it)->getY() == y && (*it) != caller) {
             return *it;

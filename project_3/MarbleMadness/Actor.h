@@ -8,48 +8,55 @@
 
 class Actor : public GraphObject {
 public:
-    Actor(StudentWorld* world, int imageID, int hp, double startX, double startY, int opacity = 0, int dir = right)
-    : GraphObject(imageID, startX, startY, dir, 1.0), m_world(world), m_hp(hp), m_opacity(opacity) { setVisible(true);
+    // Constructor
+    Actor(StudentWorld* world, int imageID, int hp, double startX, double startY, int dir = none)
+    : GraphObject(imageID, startX, startY, dir, 1.0), m_world(world), m_hp(hp) { setVisible(true);
     }
+
+    // Required function
     virtual void doSomething() {}
-    virtual void getAttacked() {}
-    virtual bool getPushed(int dir, int pusherOpacity) { return false; }
 
-    void findNewCoordinates(double& x, double& y, int dir, int units);
+    // Helper functions
+    virtual bool takeDamage() { return false; }
 
+    // Getters and Setters
     StudentWorld* world() const { return m_world; }
     int hp() const { return m_hp; }
     void sethp(int newhp) { m_hp = newhp; }
 
-    /* 
-        Opacity:
-        0: Transparent and pushable
-        1: Opaque and pushable
-        2: Transparent not pushable
-        3: Opaque and not pushable
-     */
+    //Transparency Functions
+    virtual bool playerTransparent() const { return false; }
+    virtual bool marbleTransparent() const { return false; }
+    virtual bool peaTransparent() const { return false; }
+    virtual bool robotTransparent() const { return false; }
 
-    int opacity() const { return m_opacity; }
-    void setOpacity(int opacity) { m_opacity = opacity; }
+    //Attribute Functions
+    virtual bool pushable() const { return false; }
+    virtual bool swallowable() const { return false; }
 private:
     StudentWorld* m_world;
     int m_hp;
-    int m_opacity;
 };
 
-struct Wall : public Actor {
+class Wall : public Actor {
+public:
     Wall(StudentWorld* world, double startX, double startY)
-    : Actor(world, IID_WALL, 100, startX,  startY, 3) {}
+    : Actor(world, IID_WALL, 100, startX,  startY) {}
 };
 
 class Player : public Actor {
 public:
     Player(StudentWorld* world, double startX, double startY)
-    : Actor(world, IID_PLAYER, 20, startX, startY, 3), m_peas(20) {}
+    : Actor(world, IID_PLAYER, 20, startX, startY, right), m_peas(20) {}
     virtual void doSomething();
-    virtual void getAttacked() {
+    virtual bool takeDamage() {
         sethp(hp() - 2);
-        if(hp() > 0) world()->playSound(SOUND_PLAYER_IMPACT);
+        if(hp() > 0) {
+            world()->playSound(SOUND_PLAYER_IMPACT);
+        } else {
+            world()->playSound(SOUND_PLAYER_DIE);
+        }
+        return true;
     }
     void incPeas(int n) { m_peas += n; }
 private:
@@ -57,78 +64,52 @@ private:
     void shoot();
 };
 
-struct Marble : public Actor {
+class Marble : public Actor {
+public:
     Marble(StudentWorld* world, double startX, double startY)
     : Actor(world, IID_MARBLE, 10, startX, startY, 1) {}
-    virtual void getAttacked() { sethp(hp() - 2); }
-    virtual bool getPushed(int dir, int pusherOpacity);
+    virtual bool takeDamage() { sethp(hp() - 2); return true; }
+    virtual bool pushable() const { return true; }
+    virtual bool swallowable() const { return true; }
 };
 
-struct Pea : public Actor {
+class Pea : public Actor {
+public:
     Pea(StudentWorld* world, double startX, double startY, int dir)
-    : Actor(world, IID_PEA, 100, startX, startY, 0, dir) {}
+    : Actor(world, IID_PEA, 100, startX, startY, dir), m_moved(false) {}
     virtual void doSomething();
+    virtual bool playerTransparent() const { return true; }
+    virtual bool marbleTransparent() const { return true; }
+    virtual bool peaTransparent() const { return true; }
+    virtual bool robotTransparent() const { return true; }
+private:
+    bool m_moved;
 };
 
-struct Pit : public Actor {    
+class Pit : public Actor {
+public:
     Pit(StudentWorld* world, double startX, double startY)
-    : Actor(world, IID_PIT, 100, startX, startY, 2) {}
+    : Actor(world, IID_PIT, 100, startX, startY) {}
     virtual void doSomething();
-    virtual bool getPushed(int dir, int pusherOpacity);
+    virtual bool marbleTransparent() const { return true; }
+    virtual bool peaTransparent() const { return true; }
 };
 
-class Pickup : public Actor {
+class RageBot : public Actor {
 public:
-    Pickup(StudentWorld* world, int imageID, double startX, double startY)
-    : Actor(world, imageID, 100, startX, startY, 0) {}
+    RageBot(StudentWorld* world, double startX, double startY, int dir)
+    : Actor(world, IID_RAGEBOT, 10, startX, startY, dir) {}
     virtual void doSomething();
-    virtual bool getPushed(int dir, int pusherOpacity) { return true; }
-
-    bool playerHere();
-private:
-    virtual void pickUp() = 0;
+    virtual bool takeDamage() {
+        sethp(hp() - 2);
+        if(hp() > 0) {
+            world()->playSound(SOUND_ROBOT_IMPACT);
+        } else {
+            world()->playSound(SOUND_ROBOT_DIE);
+            world()->increaseScore(100);
+        }
+        return true;
+    }
+    void shoot();
 };
-
-class Crystal : public Pickup {
-public:
-    Crystal(StudentWorld* world, double startX, double startY)
-    : Pickup(world, IID_CRYSTAL, startX, startY) {}
-private:
-    virtual void pickUp();
-};
-
-class Exit : public Pickup {
-public:
-    Exit(StudentWorld* world, double startX, double startY)
-    : Pickup(world, IID_EXIT, startX, startY), m_revealed(false) {}
-    virtual void doSomething();
-private:
-    virtual void pickUp();
-    bool m_revealed;
-};
-
-class ExtraLife : public Pickup {
-public:
-    ExtraLife(StudentWorld* world, double startX, double startY)
-    : Pickup(world, IID_EXTRA_LIFE, startX, startY) {}
-private:
-    virtual void pickUp();
-};
-
-class RestoreHealth : public Pickup {
-public:
-    RestoreHealth(StudentWorld* world, double startX, double startY)
-    : Pickup(world, IID_RESTORE_HEALTH, startX, startY) {}
-private:
-    virtual void pickUp();
-};
-
-class Ammo : public Pickup {
-public:
-    Ammo(StudentWorld* world, double startX, double startY)
-    : Pickup(world, IID_AMMO, startX, startY) {}
-private:
-    virtual void pickUp();
-};
-
 #endif // ACTOR_H_
