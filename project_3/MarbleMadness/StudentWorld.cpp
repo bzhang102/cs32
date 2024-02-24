@@ -14,6 +14,11 @@ GameWorld* createStudentWorld(string assetPath) {
 // MARK: Required Implementations
 
 int StudentWorld::init() {
+    m_curTick = 0;
+    m_bonus = 1000;
+    m_levelComplete = false;
+    m_crystals = 0;
+
     // format levelPath string
     string levelPath;
     if(getLevel() < 9)
@@ -39,6 +44,7 @@ int StudentWorld::init() {
                         break;
                     case Level::player:
                         m_player = new Player(this, x, y);
+                        m_actors.push_back(m_player);
                         break;
                     case Level::wall:
                         m_actors.push_back(new Wall(this, x, y));
@@ -48,6 +54,22 @@ int StudentWorld::init() {
                         break;
                     case Level::pit:
                         m_actors.push_back(new Pit(this, x, y));
+                        break;
+                    case Level::crystal:
+                        m_actors.push_back(new Crystal(this, x, y));
+                        m_crystals++;
+                        break;
+                    case Level::exit:
+                        m_actors.push_back(new Exit(this, x, y));
+                        break;
+                    case Level::extra_life:
+                        m_actors.push_back(new ExtraLife(this, x, y));
+                        break;
+                    case Level::restore_health:
+                        m_actors.push_back(new RestoreHealth(this, x, y));
+                        break;
+                    case Level::ammo:
+                        m_actors.push_back(new Ammo(this, x, y));
                         break;
                     case Level::vert_ragebot:
                         m_actors.push_back(new RageBot(this, x, y, GraphObject::up));
@@ -66,9 +88,6 @@ int StudentWorld::init() {
 }
 
 int StudentWorld::move() {
-    // tell player to do something
-    m_player->doSomething();
-
     // tell actors do do something
     for(auto it = m_actors.begin(); it != m_actors.end(); it++) {
         (*it)->doSomething();
@@ -76,10 +95,9 @@ int StudentWorld::move() {
         // check if player died
         if(m_player->hp() <= 0) {
             playSound(SOUND_PLAYER_DIE);
+            decLives();
             return GWSTATUS_PLAYER_DIED;
         }
-
-        // TODO: check if player exited
     }
 
     // remove dead actors
@@ -91,29 +109,22 @@ int StudentWorld::move() {
             it++;
         }
     }
+    // check to see if level was completed
+    if(m_levelComplete) {
+        increaseScore(m_bonus);
+        return GWSTATUS_FINISHED_LEVEL;
+    }
 
-    // decrement bonus points
     if(m_bonus > 0) m_bonus--;
-
-    // increment current tick
     m_curTick++;
-
-    // update display text
     setDisplayText();
-
-    // remove all dead actors
     return GWSTATUS_CONTINUE_GAME;
 }
 
 void StudentWorld::cleanUp() {
-    // delete player
-    delete m_player;
-    m_player = nullptr;
-    
-    //delete actors
-    for(auto it = m_actors.begin(); it != m_actors.end(); it++) {
+    for(auto it = m_actors.begin(); it != m_actors.end();) {
         delete *it;
-        *it = nullptr;
+        it = m_actors.erase(it);
     }
 }
 
@@ -191,13 +202,7 @@ void StudentWorld::movePea(Pea* pea, int dir) const {
     // get current location
     double x = pea->getX();
     double y = pea->getY();
-    
-    if(m_player->getX() == x && m_player->getY() == y) {
-        m_player->takeDamage();
-        pea->sethp(0);
-        pea->setVisible(false);
-        return;
-    }
+
     for(auto it = m_actors.begin(); it != m_actors.end(); it++) {
         if((*it)->getX() == x && (*it)->getY() == y) {
             if(!(*it)->peaTransparent()) {
@@ -212,11 +217,6 @@ void StudentWorld::movePea(Pea* pea, int dir) const {
     targetCoords(x, y, dir, 1);
     pea->moveTo(x, y);
 
-    if(m_player->getX() == x && m_player->getY() == y) {
-        m_player->takeDamage();
-        pea->sethp(0);
-        pea->setVisible(false);
-    }
     for(auto it = m_actors.begin(); it != m_actors.end(); it++) {
         if((*it)->getX() == x && (*it)->getY() == y) {
             if(!(*it)->peaTransparent()) {
@@ -261,7 +261,7 @@ bool StudentWorld::canShootAtPlayer(RageBot* bot, int dir) const {
             upper = x;
             if(y != m_player->getY() || x < lower) return false;
             for(auto it = m_actors.begin(); it != m_actors.end(); it++) {
-                if((*it)->getX() > lower && (*it)->getX() < upper && !(*it)->peaTransparent()) {
+                if((*it)->getY() == y && (*it)->getX() > lower && (*it)->getX() < upper && !(*it)->peaTransparent()) {
                     return false;
                 }
             }
@@ -280,8 +280,10 @@ bool StudentWorld::canShootAtPlayer(RageBot* bot, int dir) const {
             lower = y;
             upper = m_player->getY();
             if(x != m_player->getX() || y > upper) return false;
+            Actor* cur;
             for(auto it = m_actors.begin(); it != m_actors.end(); it++) {
-                if((*it)->getY() > lower && (*it)->getY() < upper && !(*it)->peaTransparent()) {
+                cur = *it;
+                if((*it)->getX() == x && (*it)->getY() > lower && (*it)->getY() < upper && !(*it)->peaTransparent()) {
                     return false;
                 }
             }
@@ -291,7 +293,8 @@ bool StudentWorld::canShootAtPlayer(RageBot* bot, int dir) const {
             upper = y;
             if(x != m_player->getX() || y < lower) return false;
             for(auto it = m_actors.begin(); it != m_actors.end(); it++) {
-                if((*it)->getY() > lower && (*it)->getY() < upper && !(*it)->peaTransparent()) {
+                cur = *it;
+                if((*it)->getX() == x && (*it)->getY() > lower && (*it)->getY() < upper && !(*it)->peaTransparent()) {
                     return false;
                 }
             }

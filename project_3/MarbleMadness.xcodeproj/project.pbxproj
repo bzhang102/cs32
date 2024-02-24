@@ -45,6 +45,11 @@
 		4B91F8C52034176C003AFA78 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		4B91F8C720341775003AFA78 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		4BDD1225299A1704000721B8 /* Level.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Level.h; sourceTree = "<group>"; };
+		CA0721802B8AA77F00A5EE1D /* level01.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = level01.txt; path = DerivedData/MarbleMadness/Build/Products/Debug/Assets/level01.txt; sourceTree = "<group>"; };
+		CA0721812B8AA77F00A5EE1D /* level02.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = level02.txt; path = DerivedData/MarbleMadness/Build/Products/Debug/Assets/level02.txt; sourceTree = "<group>"; };
+		CA0721822B8AA77F00A5EE1D /* level03.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = level03.txt; path = DerivedData/MarbleMadness/Build/Products/Debug/Assets/level03.txt; sourceTree = "<group>"; };
+		CA0721832B8AA77F00A5EE1D /* level04.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = level04.txt; path = DerivedData/MarbleMadness/Build/Products/Debug/Assets/level04.txt; sourceTree = "<group>"; };
+		CA0721842B8AA77F00A5EE1D /* level00.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = level00.txt; path = DerivedData/MarbleMadness/Build/Products/Debug/Assets/level00.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +70,11 @@
 				4B91F8A72033F260003AFA78 /* MarbleMadness */,
 				4B91F8A62033F260003AFA78 /* Products */,
 				4B91F8C42034176C003AFA78 /* Frameworks */,
+				CA0721842B8AA77F00A5EE1D /* level00.txt */,
+				CA0721802B8AA77F00A5EE1D /* level01.txt */,
+				CA0721812B8AA77F00A5EE1D /* level02.txt */,
+				CA0721822B8AA77F00A5EE1D /* level03.txt */,
+				CA0721832B8AA77F00A5EE1D /* level04.txt */,
 			);
 			sourceTree = "<group>";
 		};

@@ -10,13 +10,8 @@ class Actor : public GraphObject {
 public:
     // Constructor
     Actor(StudentWorld* world, int imageID, int hp, double startX, double startY, int dir = none)
-    : GraphObject(imageID, startX, startY, dir, 1.0), m_world(world), m_hp(hp) { setVisible(true);
-    }
-
-    // Required function
+    : GraphObject(imageID, startX, startY, dir, 1.0), m_world(world), m_hp(hp) { setVisible(true); }
     virtual void doSomething() {}
-
-    // Helper functions
     virtual bool takeDamage() { return false; }
 
     // Getters and Setters
@@ -24,15 +19,14 @@ public:
     int hp() const { return m_hp; }
     void sethp(int newhp) { m_hp = newhp; }
 
-    //Transparency Functions
+    //Atribute Functions
     virtual bool playerTransparent() const { return false; }
     virtual bool marbleTransparent() const { return false; }
     virtual bool peaTransparent() const { return false; }
     virtual bool robotTransparent() const { return false; }
-
-    //Attribute Functions
     virtual bool pushable() const { return false; }
     virtual bool swallowable() const { return false; }
+    virtual bool stealable() const { return false; }
 private:
     StudentWorld* m_world;
     int m_hp;
@@ -94,6 +88,62 @@ public:
     virtual void doSomething();
     virtual bool marbleTransparent() const { return true; }
     virtual bool peaTransparent() const { return true; }
+};
+
+class Pickup : public Actor {
+public:
+    Pickup(StudentWorld* world, int imageID, double startX, double startY)
+    : Actor(world, imageID, 100, startX, startY) {}
+    virtual void doSomething();
+
+    virtual bool playerTransparent() const { return true; }
+    virtual bool peaTransparent() const { return true; }
+    virtual bool robotTransparent() const { return true; }
+private:
+    virtual void pickUp() = 0;
+};
+
+class Crystal : public Pickup {
+public:
+    Crystal(StudentWorld* world, double startX, double startY)
+    : Pickup(world, IID_CRYSTAL, startX, startY) {}
+private:
+    virtual void pickUp();
+};
+
+class ExtraLife : public Pickup {
+public:
+    ExtraLife(StudentWorld* world, double startX, double startY)
+    : Pickup(world, IID_EXTRA_LIFE, startX, startY) {}
+private:
+    virtual void pickUp();
+};
+
+class RestoreHealth : public Pickup {
+public:
+    RestoreHealth(StudentWorld* world, double startX, double startY)
+    : Pickup(world, IID_RESTORE_HEALTH, startX, startY) {}
+private:
+    virtual void pickUp();
+};
+
+class Ammo : public Pickup {
+public:
+    Ammo(StudentWorld* world, double startX, double startY)
+    : Pickup(world, IID_AMMO, startX, startY) {}
+private:
+    virtual void pickUp();
+};
+
+class Exit : public Actor {
+public:
+    Exit(StudentWorld* world, double startX, double startY)
+    : Actor(world, IID_EXIT, 100, startX, startY) { setVisible(false); }
+    virtual void doSomething();
+
+    virtual bool playerTransparent() const { return true; }
+    virtual bool peaTransparent() const { return true; }
+    virtual bool robotTransparent() const { return true; }
 };
 
 class RageBot : public Actor {

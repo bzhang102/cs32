@@ -75,6 +75,58 @@ void Pit::doSomething() {
     }
 }
 
+// MARK: Pickup
+void Pickup::doSomething() {
+    // if dead do nothing
+    if(hp() <= 0) return;
+
+    // if player is on square, get picked up
+    if(world()->player()->getX() == getX() && world()->player()->getY() == getY()) {
+        sethp(0);
+        setVisible(false);
+        world()->playSound(SOUND_GOT_GOODIE);
+        pickUp();
+    }
+}
+
+// MARK: Crystal
+void Crystal::pickUp() {
+    world()->increaseScore(50);
+    world()->decCrystals();
+}
+
+// MARK: ExtraLife
+void ExtraLife::pickUp() {
+    world()->increaseScore(1000);
+    world()->incLives();
+}
+
+// MARK: RestoreHealth
+void RestoreHealth::pickUp() {
+    world()->increaseScore(500);
+    world()->playSound(SOUND_GOT_GOODIE);
+    world()->player()->sethp(20);
+}
+
+// MARK: Ammo
+void Ammo::pickUp() {
+    world()->increaseScore(100);
+    world()->playSound(SOUND_GOT_GOODIE);
+    world()->player()->incPeas(20);
+}
+
+// MARK: Exit
+void Exit::doSomething() {
+    // update visibility
+    if(world()->crystalsLeft() == 0) setVisible(true);
+
+    if(isVisible() && world()->player()->getX() == getX() && world()->player()->getY() == getY()) {
+        world()->increaseScore(2000);
+        world()->playSound(SOUND_FINISHED_LEVEL);
+        world()->setComplete(true);
+    }
+}
+
 // MARK: RageBot
 void RageBot::doSomething() {
     // if dead do nothing
@@ -85,6 +137,7 @@ void RageBot::doSomething() {
     if(ticks < 3) ticks = 3;
     
     if(world()->curTick() % ticks == 0) {
+
         if(world()->canShootAtPlayer(this, getDirection())) {
             double x = getX();
             double y = getY();

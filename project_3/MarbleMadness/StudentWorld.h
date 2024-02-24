@@ -25,12 +25,15 @@ public:
     virtual int move();
     virtual void cleanUp();
 
-    // Helper Setters
+    // Modifiers
     void setDisplayText();
     void addActor(Actor* actor) { m_actors.push_back(actor); }
+    void decCrystals() { m_crystals--; }
+    void setComplete(bool complete) { m_levelComplete = complete; }
 
-    // Helper Getters
-    int curTick() { return m_curTick; }
+    // Getters
+    int crystalsLeft() const { return m_crystals; }
+    int curTick() const { return m_curTick; }
     void targetCoords(double& x, double& y, int dir, int units) const;
     Actor* actorAtCoords(Actor* caller, double x, double y) const;
     Player* player() const { return m_player; }
@@ -46,6 +49,8 @@ private:
 
     int m_curTick;
     int m_bonus;
+    int m_crystals;
+    bool m_levelComplete;
 };
 
 #endif // STUDENTWORLD_H_

@@ -444,7 +444,7 @@ void GameController::displayGamePlay()
 
 void GameController::reportLeakedGraphObjects() const
 {
-	//int totalLeaked = 0;
+	int totalLeaked = 0;
 	auto& graphObjects = GraphObject::getGraphObjects();
 	if (graphObjects.empty())
 		cerr << "No memory leaks were detected." << endl;
@@ -454,10 +454,10 @@ void GameController::reportLeakedGraphObjects() const
 		for (GraphObject* go : graphObjects)
 			cerr << "At (" << go->getX() << "," << go->getY() << "): "
 						   <<  m_imageNameMap.at(go->m_imageID) << endl;
-		//totalLeaked += graphObjects.size();
+		totalLeaked += graphObjects.size();
 	}
-	//if (totalLeaked > 0)
-	//	cout << "***** Total leaked objects: " << totalLeaked << endl;
+	if (totalLeaked > 0)
+		cout << "***** Total leaked objects: " << totalLeaked << endl;
 }
 
 void GameController::reshape (int w, int h)
