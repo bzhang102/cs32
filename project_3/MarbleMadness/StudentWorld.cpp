@@ -1,7 +1,9 @@
 #include "StudentWorld.h"
 #include "GameConstants.h"
 #include "Actor.h"
+#include <iostream>
 #include <string>
+#include <iomanip>
 #include <cmath>
 using namespace std;
 
@@ -9,7 +11,7 @@ GameWorld* createStudentWorld(string assetPath) {
 	return new StudentWorld(assetPath);
 }
 
-// Students:  Add code to this file, StudentWorld.h, Actor.h, and Actor.cpp
+// MARK: Required Implementations
 
 int StudentWorld::init() {
     // format levelPath string
@@ -118,7 +120,21 @@ void StudentWorld::cleanUp() {
 // MARK: Helper Functions
 
 void StudentWorld::setDisplayText() {
-    // TODO: formatting using stringstreams
+    // Next, create a string from your statistics, of the form:
+    // Score: 0000100 Level: 03 Lives: 3 Health: 70% Ammo: 216 Bonus: 34
+    ostringstream oss;
+    oss.fill('0');
+    oss << "Score: " << setw(7) << getScore() << "  ";
+    oss << "Level: " << setw(2) << getLevel() << "  ";
+    oss.fill(' ');
+    oss << "Lives: " << setw(2) << getLives() << "  ";
+    oss << "Health: " << setw(3) << round(m_player->hp() / 0.2) << "%  ";
+    oss << "Ammo: " << setw(2) << m_player->peas() << "  ";
+    oss << "Bonus: " << setw(4) << m_bonus;
+
+    // Finally, update the display text at the top of the screen with your
+    // newly created stats
+    setGameStatText(oss.str()); // calls our provided GameWorld::setGameStatText
 }
 
 void StudentWorld::targetCoords(double& x, double& y, int dir, int units) const {
@@ -273,7 +289,7 @@ bool StudentWorld::canShootAtPlayer(RageBot* bot, int dir) const {
         case GraphObject::down:
             lower = m_player->getY();
             upper = y;
-            if(y != m_player->getY() || y < lower) return false;
+            if(x != m_player->getX() || y < lower) return false;
             for(auto it = m_actors.begin(); it != m_actors.end(); it++) {
                 if((*it)->getY() > lower && (*it)->getY() < upper && !(*it)->peaTransparent()) {
                     return false;
@@ -282,7 +298,6 @@ bool StudentWorld::canShootAtPlayer(RageBot* bot, int dir) const {
     }
     return true;
 }
-
 
 Actor* StudentWorld::actorAtCoords(Actor* caller, double x, double y) const {
     for(auto it = m_actors.begin(); it != m_actors.end(); it++) {

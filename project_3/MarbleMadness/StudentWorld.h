@@ -4,6 +4,7 @@
 #include "GameWorld.h"
 #include "Level.h"
 #include <string>
+#include <sstream>
 #include <list>
 // Students:  Add code to this file, StudentWorld.cpp, Actor.h, and Actor.cpp
 

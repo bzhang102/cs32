@@ -59,6 +59,7 @@ public:
         return true;
     }
     void incPeas(int n) { m_peas += n; }
+    int peas() const { return m_peas; }
 private:
     int m_peas;
     void shoot();
