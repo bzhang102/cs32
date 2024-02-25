@@ -6,6 +6,8 @@
 
 // Students:  Add code to this file, Actor.cpp, StudentWorld.h, and StudentWorld.cpp
 
+class StudentWorld;
+
 class Actor : public GraphObject {
 public:
     // Constructor
@@ -146,21 +148,40 @@ public:
     virtual bool robotTransparent() const { return true; }
 };
 
-class RageBot : public Actor {
+class Bot : public Actor {
+public:
+    Bot(StudentWorld* world, int imageID, int hp, double startX, double startY, int dir)
+    : Actor(world, imageID, hp, startX, startY, dir) {}
+    virtual bool takeDamage();
+    virtual void shoot();
+};
+
+class RageBot : public Bot {
 public:
     RageBot(StudentWorld* world, double startX, double startY, int dir)
-    : Actor(world, IID_RAGEBOT, 10, startX, startY, dir) {}
+    : Bot(world, IID_RAGEBOT, 10, startX, startY, dir) {}
     virtual void doSomething();
-    virtual bool takeDamage() {
-        sethp(hp() - 2);
-        if(hp() > 0) {
-            world()->playSound(SOUND_ROBOT_IMPACT);
-        } else {
-            world()->playSound(SOUND_ROBOT_DIE);
-            world()->increaseScore(100);
-        }
-        return true;
-    }
-    void shoot();
 };
+
+class ThiefBot : public Bot {
+public:
+    ThiefBot(StudentWorld* world, double startX, double startY)
+    : Bot(world, IID_THIEFBOT, 5, startX, startY, right), m_stolenGoods(nullptr), m_spacesMoved(0) {
+        m_distanceBeforeTurning = (rand() % 6) + 1;
+    }
+    virtual void doSomething();
+    virtual bool takeDamage();
+    void steal(Actor* toSteal);
+    void turn();
+
+    int spacedMoved() const { return m_spacesMoved; }
+    void setSpacesMoved(int spaces) { m_spacesMoved = spaces; }
+    int distanceBeforeTurning() const { return m_distanceBeforeTurning; }
+    void setDistanceBeforeTurning(int newDist) { m_distanceBeforeTurning = newDist; }
+private:
+    Actor* m_stolenGoods;
+    int m_distanceBeforeTurning;
+    int m_spacesMoved;
+};
+
 #endif // ACTOR_H_

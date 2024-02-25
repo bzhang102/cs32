@@ -30,7 +30,7 @@ void Player::doSomething() {
                 return;
         }
         setDirection(dir);
-        world()->movePlayer(dir);
+        world()->movePlayer();
     }
 }
 
@@ -38,7 +38,7 @@ void Player::shoot() {
     if(m_peas > 0) {
         double x = getX();
         double y = getY();
-        world()->targetCoords(x, y, getDirection(), 1);
+        world()->targetCoords(x, y, getDirection());
         world()->addActor(new Pea(world(), x, y, getDirection()));
         world()->playSound(SOUND_PLAYER_FIRE);
         m_peas--;
@@ -56,7 +56,7 @@ void Pea::doSomething() {
         return;
     }
     // attempt to move pea
-    world()->movePea(this, getDirection());
+    world()->movePea(this);
 }
 
 // MARK: Pit
@@ -77,8 +77,8 @@ void Pit::doSomething() {
 
 // MARK: Pickup
 void Pickup::doSomething() {
-    // if dead do nothing
-    if(hp() <= 0) return;
+    // if dead or invisible do nothing
+    if(hp() <= 0 || !isVisible()) return;
 
     // if player is on square, get picked up
     if(world()->player()->getX() == getX() && world()->player()->getY() == getY()) {
@@ -127,6 +127,28 @@ void Exit::doSomething() {
     }
 }
 
+// MARK: Bot
+bool Bot::takeDamage() {
+    sethp(hp() - 2);
+    if(hp() > 0) {
+        world()->playSound(SOUND_ROBOT_IMPACT);
+    } else {
+        // if dead
+        setVisible(false);
+        world()->playSound(SOUND_ROBOT_DIE);
+        world()->increaseScore(100);
+    }
+    return true;
+}
+
+void Bot::shoot() {
+    double x = getX();
+    double y = getY();
+    world()->targetCoords(x, y, getDirection());
+    world()->addActor(new Pea(world(), x, y, getDirection()));
+    world()->playSound(SOUND_ENEMY_FIRE);
+}
+
 // MARK: RageBot
 void RageBot::doSomething() {
     // if dead do nothing
@@ -137,16 +159,82 @@ void RageBot::doSomething() {
     if(ticks < 3) ticks = 3;
     
     if(world()->curTick() % ticks == 0) {
-
-        if(world()->canShootAtPlayer(this, getDirection())) {
-            double x = getX();
-            double y = getY();
-            world()->targetCoords(x, y, getDirection(), 1);
-            world()->addActor(new Pea(world(), x, y, getDirection()));
-            world()->playSound(SOUND_ENEMY_FIRE);
+        if(world()->canShootAtPlayer(this)) {
+            shoot();
         } else {
-            world()->moveRageBot(this, getDirection());
+            world()->moveRageBot(this);
         }
     }
 }
 
+// MARK: ThiefBot
+void ThiefBot::doSomething() {
+    // if dead do nothing
+    if(hp() <= 0) return;
+
+    // calculate number of ticks to wait
+    int ticks = (28 - world()->getLevel()) / 4;
+    if(ticks < 3) ticks = 3;
+
+    if(world()->curTick() % ticks == 0) {
+        Actor* toSteal = world()->canSteal(this);
+        if(toSteal != nullptr) {
+            steal(toSteal);
+        } else {
+            world()->moveThiefBot(this);
+        }
+    }
+}
+
+void ThiefBot::steal(Actor* toSteal) {
+    if(toSteal != nullptr) {
+        if(rand() % 10 == 0) {
+            toSteal->setVisible(false);
+            m_stolenGoods = toSteal;
+            world()->playSound(SOUND_ROBOT_MUNCH);
+        }
+    }
+}
+
+bool ThiefBot::takeDamage() {
+    sethp(hp() - 2);
+    if(hp() > 0) {
+        world()->playSound(SOUND_ROBOT_IMPACT);
+    } else {
+        // if dead
+        setVisible(false);
+        world()->playSound(SOUND_ROBOT_DIE);
+        world()->increaseScore(10);
+        // drop stolen goods
+        if(m_stolenGoods != nullptr) {
+            m_stolenGoods->moveTo(getX(), getY());
+            m_stolenGoods->setVisible(true);
+        }
+    }
+    return true;
+}
+
+void ThiefBot::turn() {
+    int directions[] = {up, down, left, right};
+
+    double x = getX();
+    double y = getY();
+
+    int random = rand() % 4;
+    int initialDirection = directions[random];
+
+    // attempt to set random direction
+    for(int i = 1; i <= 4; i++) {
+        world()->targetCoords(x, y, directions[random]);
+        if(world()->botCanMoveHere(x, y)) {
+            setDirection(directions[random]);
+            moveTo(x, y);
+            return;
+        }
+        directions[random] = directions[4 - i];
+        random = rand() % (4 - i);
+    }
+
+    // blocked on all sides
+    setDirection(initialDirection);
+}

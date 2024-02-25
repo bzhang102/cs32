@@ -89,7 +89,7 @@ int StudentWorld::init() {
 
 int StudentWorld::move() {
     // tell actors do do something
-    for(auto it = m_actors.begin(); it != m_actors.end(); it++) {
+    for(auto it = m_actors.begin(); !m_levelComplete && it != m_actors.end(); it++) {
         (*it)->doSomething();
 
         // check if player died
@@ -148,28 +148,28 @@ void StudentWorld::setDisplayText() {
     setGameStatText(oss.str()); // calls our provided GameWorld::setGameStatText
 }
 
-void StudentWorld::targetCoords(double& x, double& y, int dir, int units) const {
+void StudentWorld::targetCoords(double& x, double& y, int dir) const {
     switch(dir) {
         case GraphObject::up:
-            y += units;
+            y += 1;
             break;
         case GraphObject::down:
-            y -= units;
+            y -= 1;
             break;
         case GraphObject::right:
-            x += units;
+            x += 1;
             break;
         case GraphObject::left:
-            x -= units;
+            x -= 1;
             break;
     }
 }
 
-void StudentWorld::movePlayer(int dir) const {
+void StudentWorld::movePlayer() {
     // get target location
     double x = m_player->getX();
     double y = m_player->getY();
-    targetCoords(x, y, dir, 1);
+    targetCoords(x, y, m_player->getDirection());
 
     // iterate through all actors
     for(auto it = m_actors.begin(); it != m_actors.end(); it++) {
@@ -183,7 +183,7 @@ void StudentWorld::movePlayer(int dir) const {
                 // get coords of space to push into
                 double nextX = x;
                 double nextY = y;
-                targetCoords(nextX, nextY, dir, 1);
+                targetCoords(nextX, nextY, m_player->getDirection());
                 Actor* actorAtTarget = actorAtCoords(nullptr, nextX, nextY);
                 // if nothing at target coords, or marble transparent at target coords
                 if(actorAtTarget == nullptr || actorAtTarget->marbleTransparent()) {
@@ -198,7 +198,7 @@ void StudentWorld::movePlayer(int dir) const {
     m_player->moveTo(x, y);
 }
 
-void StudentWorld::movePea(Pea* pea, int dir) const {
+void StudentWorld::movePea(Pea* pea) {
     // get current location
     double x = pea->getX();
     double y = pea->getY();
@@ -214,7 +214,7 @@ void StudentWorld::movePea(Pea* pea, int dir) const {
         }
     }
 
-    targetCoords(x, y, dir, 1);
+    targetCoords(x, y, pea->getDirection());
     pea->moveTo(x, y);
 
     for(auto it = m_actors.begin(); it != m_actors.end(); it++) {
@@ -229,11 +229,7 @@ void StudentWorld::movePea(Pea* pea, int dir) const {
     }
 }
 
-void StudentWorld::moveRageBot(RageBot* bot, int dir) const {
-    double x = bot->getX();
-    double y = bot->getY();
-    targetCoords(x, y, dir, 1);
-
+bool StudentWorld::botCanMoveHere(double x, double y) const {
     for(auto it = m_actors.begin(); it != m_actors.end(); it++) {
         // if an actor is here
         if((*it)->getX() == x && (*it)->getY() == y) {
@@ -241,21 +237,48 @@ void StudentWorld::moveRageBot(RageBot* bot, int dir) const {
             if((*it)->robotTransparent()) {
                 continue;
             } else {
-                bot->setDirection((dir + 180) % 360);
-                return;
+                return false;
             }
         }
     }
-    // valid movement, move bot
-    bot->moveTo(x, y);
+    return true;
 }
 
-bool StudentWorld::canShootAtPlayer(RageBot* bot, int dir) const {
+void StudentWorld::moveRageBot(RageBot* bot) {
+    double x = bot->getX();
+    double y = bot->getY();
+    targetCoords(x, y, bot->getDirection());
+
+    if(botCanMoveHere(x, y)) {
+        bot->moveTo(x, y);
+    } else {
+        bot->setDirection((bot->getDirection() + 180) % 360);
+    }
+}
+
+void StudentWorld::moveThiefBot(ThiefBot* bot) {
+    if(bot->spacedMoved() >= bot->distanceBeforeTurning()) {
+        bot->turn();
+        return;
+    }
+
+    double x = bot->getX();
+    double y = bot->getY();
+    targetCoords(x, y, bot->getDirection());
+
+    if(botCanMoveHere(x, y)) {
+        bot->moveTo(x, y);
+    } else {
+        bot->turn();
+    }
+}
+
+bool StudentWorld::canShootAtPlayer(Bot* bot) const {
     double x = bot->getX();
     double y = bot->getY();
 
     int lower, upper;
-    switch(dir) {
+    switch(bot->getDirection()) {
         case GraphObject::left:
             lower = m_player->getX();
             upper = x;
@@ -300,6 +323,20 @@ bool StudentWorld::canShootAtPlayer(RageBot* bot, int dir) const {
             }
     }
     return true;
+}
+
+Actor* StudentWorld::canSteal(ThiefBot* bot) const {
+    double x = bot->getX();
+    double y = bot->getY();
+
+    // iterate through until something stealable is found
+    for(auto it = m_actors.begin(); it != m_actors.end(); it++) {
+        if((*it) != bot && (*it)->getX() == x && (*it)->getY() == y && (*it)->stealable() && (*it)->isVisible()) {
+            return *it;
+        }
+    }
+    // nothing found, return nothing
+    return nullptr;
 }
 
 Actor* StudentWorld::actorAtCoords(Actor* caller, double x, double y) const {

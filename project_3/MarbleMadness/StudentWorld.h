@@ -11,7 +11,9 @@
 class Actor;
 class Player;
 class Pea;
+class Bot;
 class RageBot;
+class ThiefBot;
 
 class StudentWorld : public GameWorld {
 public:
@@ -34,15 +36,18 @@ public:
     // Getters
     int crystalsLeft() const { return m_crystals; }
     int curTick() const { return m_curTick; }
-    void targetCoords(double& x, double& y, int dir, int units) const;
+    void targetCoords(double& x, double& y, int dir) const;
     Actor* actorAtCoords(Actor* caller, double x, double y) const;
     Player* player() const { return m_player; }
+    bool canShootAtPlayer(Bot* bot) const;
+    bool botCanMoveHere(double x, double y) const;
+    Actor* canSteal(ThiefBot* bot) const;
 
     // Helper Functions
-    void movePlayer(int dir) const;
-    void movePea(Pea* pea, int dir) const;
-    void moveRageBot(RageBot* bot, int dir) const;
-    bool canShootAtPlayer(RageBot* bot, int dir) const;
+    void movePlayer();
+    void movePea(Pea* pea);
+    void moveRageBot(RageBot* bot);
+    void moveThiefBot(ThiefBot *bot);
 private:
     Player* m_player;
     std::list<Actor*> m_actors;
