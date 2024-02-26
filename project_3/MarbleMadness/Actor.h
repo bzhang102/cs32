@@ -29,6 +29,7 @@ public:
     virtual bool pushable() const { return false; }
     virtual bool swallowable() const { return false; }
     virtual bool stealable() const { return false; }
+    virtual bool canSteal() const { return false; }
 private:
     StudentWorld* m_world;
     int m_hp;
@@ -117,6 +118,7 @@ class ExtraLife : public Pickup {
 public:
     ExtraLife(StudentWorld* world, double startX, double startY)
     : Pickup(world, IID_EXTRA_LIFE, startX, startY) {}
+    virtual bool stealable() const { return true; }
 private:
     virtual void pickUp();
 };
@@ -125,6 +127,7 @@ class RestoreHealth : public Pickup {
 public:
     RestoreHealth(StudentWorld* world, double startX, double startY)
     : Pickup(world, IID_RESTORE_HEALTH, startX, startY) {}
+    virtual bool stealable() const { return true; }
 private:
     virtual void pickUp();
 };
@@ -133,6 +136,7 @@ class Ammo : public Pickup {
 public:
     Ammo(StudentWorld* world, double startX, double startY)
     : Pickup(world, IID_AMMO, startX, startY) {}
+    virtual bool stealable() const { return true; }
 private:
     virtual void pickUp();
 };
@@ -165,12 +169,13 @@ public:
 
 class ThiefBot : public Bot {
 public:
-    ThiefBot(StudentWorld* world, double startX, double startY)
-    : Bot(world, IID_THIEFBOT, 5, startX, startY, right), m_stolenGoods(nullptr), m_spacesMoved(0) {
+    ThiefBot(StudentWorld* world, double startX, double startY, int imageID = IID_THIEFBOT, int hp = 5)
+    : Bot(world, imageID, hp, startX, startY, right), m_stolenGoods(nullptr), m_spacesMoved(0) {
         m_distanceBeforeTurning = (rand() % 6) + 1;
     }
     virtual void doSomething();
     virtual bool takeDamage();
+    virtual bool canSteal() const { return true; }
     void steal(Actor* toSteal);
     void turn();
 
@@ -178,10 +183,28 @@ public:
     void setSpacesMoved(int spaces) { m_spacesMoved = spaces; }
     int distanceBeforeTurning() const { return m_distanceBeforeTurning; }
     void setDistanceBeforeTurning(int newDist) { m_distanceBeforeTurning = newDist; }
+    Actor* stolenGoods() { return m_stolenGoods; }
 private:
     Actor* m_stolenGoods;
     int m_distanceBeforeTurning;
     int m_spacesMoved;
+};
+
+class MeanThiefBot : public ThiefBot {
+public:
+    MeanThiefBot(StudentWorld* world, double startX, double startY)
+    : ThiefBot(world, startX, startY, IID_MEAN_THIEFBOT, 8) {}
+    virtual void doSomething();
+    virtual bool takeDamage();
+};
+
+class ThiefBotFactory : public Actor {
+public:
+    ThiefBotFactory(StudentWorld* world, double startX, double startY, bool isMean)
+    : Actor(world, IID_ROBOT_FACTORY, 100, startX, startY), m_isMean(isMean) {}
+    virtual void doSomething();
+private:
+    bool m_isMean;
 };
 
 #endif // ACTOR_H_

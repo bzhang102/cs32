@@ -206,9 +206,9 @@ bool ThiefBot::takeDamage() {
         world()->playSound(SOUND_ROBOT_DIE);
         world()->increaseScore(10);
         // drop stolen goods
-        if(m_stolenGoods != nullptr) {
-            m_stolenGoods->moveTo(getX(), getY());
-            m_stolenGoods->setVisible(true);
+        if(stolenGoods() != nullptr) {
+            stolenGoods()->moveTo(getX(), getY());
+            stolenGoods()->setVisible(true);
         }
     }
     return true;
@@ -237,4 +237,57 @@ void ThiefBot::turn() {
 
     // blocked on all sides
     setDirection(initialDirection);
+}
+
+// MARK: MeanThiefBot
+void MeanThiefBot::doSomething() {
+    // if dead do nothing
+    if(hp() <= 0) return;
+
+    // calculate number of ticks to wait
+    int ticks = (28 - world()->getLevel()) / 4;
+    if(ticks < 3) ticks = 3;
+
+    if(world()->curTick() % ticks == 0) {
+        Actor* toSteal = world()->canSteal(this);
+        if(world()->canShootAtPlayer(this)) {
+            shoot();
+        } else if(toSteal != nullptr) {
+            steal(toSteal);
+        } else {
+            world()->moveThiefBot(this);
+        }
+    }
+}
+
+bool MeanThiefBot::takeDamage() {
+    sethp(hp() - 2);
+    if(hp() > 0) {
+        world()->playSound(SOUND_ROBOT_IMPACT);
+    } else {
+        // if dead
+        setVisible(false);
+        world()->playSound(SOUND_ROBOT_DIE);
+        world()->increaseScore(20);
+        // drop stolen goods
+        if(stolenGoods() != nullptr) {
+            stolenGoods()->moveTo(getX(), getY());
+            stolenGoods()->setVisible(true);
+        }
+    }
+    return true;
+}
+
+// MARK: ThiefBotFactory
+void ThiefBotFactory::doSomething() {
+    if(world()->countThiefBots(getX(), getY()) < 3) {
+        if(rand() % 50 == 0) {
+            if(m_isMean) {
+                world()->addActor(new MeanThiefBot(world(), getX(), getY()));
+            } else {
+                world()->addActor(new ThiefBot(world(), getX(), getY()));
+            }
+            world()->playSound(SOUND_ROBOT_BORN);
+        }
+    }
 }

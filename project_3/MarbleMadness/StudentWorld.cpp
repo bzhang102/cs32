@@ -25,6 +25,7 @@ int StudentWorld::init() {
         levelPath = "level0" + to_string(getLevel()) + ".txt";
     else
         levelPath = "level" + to_string(getLevel()) + ".txt";
+    levelPath = "level04.txt";
 
     // create level
     Level lev(assetPath());
@@ -76,6 +77,12 @@ int StudentWorld::init() {
                         break;
                     case Level::horiz_ragebot:
                         m_actors.push_back(new RageBot(this, x, y, GraphObject::right));
+                        break;
+                    case Level::thiefbot_factory:
+                        m_actors.push_back(new ThiefBotFactory(this, x, y, false));
+                        break;
+                    case Level::mean_thiefbot_factory:
+                        m_actors.push_back(new ThiefBotFactory(this, x, y, true));
                         break;
                     default:
                         break;
@@ -337,6 +344,19 @@ Actor* StudentWorld::canSteal(ThiefBot* bot) const {
     }
     // nothing found, return nothing
     return nullptr;
+}
+
+int StudentWorld::countThiefBots(double x, double y) const {
+    int count = 0;
+    for(auto it = m_actors.begin(); it != m_actors.end(); it++) {
+        if((*it)->canSteal() && abs(x - (*it)->getX()) <= 3 && abs(y - (*it)->getY()) <= 3) {
+            count++;
+        }
+        if((*it)->canSteal() && (*it)->getX() == x && (*it)->getY() == y) {
+            return 4;
+        }
+    }
+    return count;
 }
 
 Actor* StudentWorld::actorAtCoords(Actor* caller, double x, double y) const {

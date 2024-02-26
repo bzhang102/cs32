@@ -42,6 +42,7 @@ public:
     bool canShootAtPlayer(Bot* bot) const;
     bool botCanMoveHere(double x, double y) const;
     Actor* canSteal(ThiefBot* bot) const;
+    int countThiefBots(double x, double y) const;
 
     // Helper Functions
     void movePlayer();
