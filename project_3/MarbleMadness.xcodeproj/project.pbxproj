@@ -50,6 +50,7 @@
 		CA0721822B8AA77F00A5EE1D /* level03.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = level03.txt; path = DerivedData/MarbleMadness/Build/Products/Debug/Assets/level03.txt; sourceTree = "<group>"; };
 		CA0721832B8AA77F00A5EE1D /* level04.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = level04.txt; path = DerivedData/MarbleMadness/Build/Products/Debug/Assets/level04.txt; sourceTree = "<group>"; };
 		CA0721842B8AA77F00A5EE1D /* level00.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = level00.txt; path = DerivedData/MarbleMadness/Build/Products/Debug/Assets/level00.txt; sourceTree = "<group>"; };
+		CAF6E81B2B907C34009FD744 /* report.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = report.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +90,7 @@
 		4B91F8A72033F260003AFA78 /* MarbleMadness */ = {
 			isa = PBXGroup;
 			children = (
+				CAF6E81B2B907C34009FD744 /* report.txt */,
 				CAFCB3A12B80752A00D354B4 /* Interfaces */,
 				4B91F8B62033F3F7003AFA78 /* Actor.cpp */,
 				4B91F8B02033F3F7003AFA78 /* Actor.h */,

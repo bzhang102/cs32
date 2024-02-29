@@ -1,0 +1,29 @@
+Yuxiang Zhang
+206142605
+
+1. Description of Control Flow:
+    
+
+2. List of Unimplemented Functionality:
+    N/A, all functionality described by spec implemented
+
+3. Other Design Choices:
+    Alternative Class Structure Used:
+    Actor
+        Wall
+        Player
+        Marble
+        Pea
+        Pit
+        Exit
+        Pickup
+            Crystal (not stealable)
+            ExtraLife (stealable)
+            RestoreHealth (stealable)
+            Ammo (stealable)
+        Bot
+            RageBot
+            ThiefBot (Mean vs Reg implemented using booleans for simplicity)
+        ThiefBotFactory (Mean vs Reg implemented using booleans for simplicity)
+
+

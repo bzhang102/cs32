@@ -75,6 +75,18 @@ void Pit::doSomething() {
     }
 }
 
+// MARK: Exit
+void Exit::doSomething() {
+    // update visibility
+    if(world()->crystalsLeft() == 0) setVisible(true);
+
+    if(isVisible() && world()->player()->getX() == getX() && world()->player()->getY() == getY()) {
+        world()->increaseScore(2000);
+        world()->playSound(SOUND_FINISHED_LEVEL);
+        world()->setComplete(true);
+    }
+}
+
 // MARK: Pickup
 void Pickup::doSomething() {
     // if dead or invisible do nothing
@@ -115,32 +127,7 @@ void Ammo::pickUp() {
     world()->player()->incPeas(20);
 }
 
-// MARK: Exit
-void Exit::doSomething() {
-    // update visibility
-    if(world()->crystalsLeft() == 0) setVisible(true);
-
-    if(isVisible() && world()->player()->getX() == getX() && world()->player()->getY() == getY()) {
-        world()->increaseScore(2000);
-        world()->playSound(SOUND_FINISHED_LEVEL);
-        world()->setComplete(true);
-    }
-}
-
 // MARK: Bot
-bool Bot::takeDamage() {
-    sethp(hp() - 2);
-    if(hp() > 0) {
-        world()->playSound(SOUND_ROBOT_IMPACT);
-    } else {
-        // if dead
-        setVisible(false);
-        world()->playSound(SOUND_ROBOT_DIE);
-        world()->increaseScore(100);
-    }
-    return true;
-}
-
 void Bot::shoot() {
     double x = getX();
     double y = getY();
@@ -167,6 +154,19 @@ void RageBot::doSomething() {
     }
 }
 
+bool RageBot::takeDamage() {
+    sethp(hp() - 2);
+    if(hp() > 0) {
+        world()->playSound(SOUND_ROBOT_IMPACT);
+    } else {
+        // if dead
+        setVisible(false);
+        world()->playSound(SOUND_ROBOT_DIE);
+        world()->increaseScore(100);
+    }
+    return true;
+}
+
 // MARK: ThiefBot
 void ThiefBot::doSomething() {
     // if dead do nothing
@@ -184,14 +184,15 @@ void ThiefBot::doSomething() {
             world()->moveThiefBot(this);
         }
     }
-}
 
-void ThiefBot::steal(Actor* toSteal) {
-    if(toSteal != nullptr) {
-        if(rand() % 10 == 0) {
-            toSteal->setVisible(false);
-            m_stolenGoods = toSteal;
-            world()->playSound(SOUND_ROBOT_MUNCH);
+    if(world()->curTick() % ticks == 0) {
+        Actor* toSteal = world()->canSteal(this);
+        if(m_isMean && world()->canShootAtPlayer(this)) {
+            shoot();
+        } else if(toSteal != nullptr) {
+            steal(toSteal);
+        } else {
+            world()->moveThiefBot(this);
         }
     }
 }
@@ -204,7 +205,12 @@ bool ThiefBot::takeDamage() {
         // if dead
         setVisible(false);
         world()->playSound(SOUND_ROBOT_DIE);
-        world()->increaseScore(10);
+        // increment score differently for different meanness
+        if(m_isMean) {
+            world()->increaseScore(20);
+        } else {
+            world()->increaseScore(10);
+        }
         // drop stolen goods
         if(stolenGoods() != nullptr) {
             stolenGoods()->moveTo(getX(), getY());
@@ -212,6 +218,16 @@ bool ThiefBot::takeDamage() {
         }
     }
     return true;
+}
+
+void ThiefBot::steal(Actor* toSteal) {
+    if(toSteal != nullptr) {
+        if(rand() % 10 == 0) {
+            toSteal->setVisible(false);
+            m_stolenGoods = toSteal;
+            world()->playSound(SOUND_ROBOT_MUNCH);
+        }
+    }
 }
 
 void ThiefBot::turn() {
@@ -239,53 +255,14 @@ void ThiefBot::turn() {
     setDirection(initialDirection);
 }
 
-// MARK: MeanThiefBot
-void MeanThiefBot::doSomething() {
-    // if dead do nothing
-    if(hp() <= 0) return;
-
-    // calculate number of ticks to wait
-    int ticks = (28 - world()->getLevel()) / 4;
-    if(ticks < 3) ticks = 3;
-
-    if(world()->curTick() % ticks == 0) {
-        Actor* toSteal = world()->canSteal(this);
-        if(world()->canShootAtPlayer(this)) {
-            shoot();
-        } else if(toSteal != nullptr) {
-            steal(toSteal);
-        } else {
-            world()->moveThiefBot(this);
-        }
-    }
-}
-
-bool MeanThiefBot::takeDamage() {
-    sethp(hp() - 2);
-    if(hp() > 0) {
-        world()->playSound(SOUND_ROBOT_IMPACT);
-    } else {
-        // if dead
-        setVisible(false);
-        world()->playSound(SOUND_ROBOT_DIE);
-        world()->increaseScore(20);
-        // drop stolen goods
-        if(stolenGoods() != nullptr) {
-            stolenGoods()->moveTo(getX(), getY());
-            stolenGoods()->setVisible(true);
-        }
-    }
-    return true;
-}
-
 // MARK: ThiefBotFactory
 void ThiefBotFactory::doSomething() {
     if(world()->countThiefBots(getX(), getY()) < 3) {
         if(rand() % 50 == 0) {
             if(m_isMean) {
-                world()->addActor(new MeanThiefBot(world(), getX(), getY()));
+                world()->addActor(new ThiefBot(world(), IID_MEAN_THIEFBOT, 5, getX(), getY(), true));
             } else {
-                world()->addActor(new ThiefBot(world(), getX(), getY()));
+                world()->addActor(new ThiefBot(world(), IID_THIEFBOT, 8, getX(), getY(), false));
             }
             world()->playSound(SOUND_ROBOT_BORN);
         }

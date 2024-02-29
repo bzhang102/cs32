@@ -21,11 +21,10 @@ int StudentWorld::init() {
 
     // format levelPath string
     string levelPath;
-    if(getLevel() < 9)
+    if(getLevel() <= 9)
         levelPath = "level0" + to_string(getLevel()) + ".txt";
     else
         levelPath = "level" + to_string(getLevel()) + ".txt";
-    levelPath = "level04.txt";
 
     // create level
     Level lev(assetPath());
@@ -129,17 +128,15 @@ int StudentWorld::move() {
 }
 
 void StudentWorld::cleanUp() {
-    for(auto it = m_actors.begin(); it != m_actors.end();) {
+    for(auto it = m_actors.begin(); it != m_actors.end(); it++) {
         delete *it;
-        it = m_actors.erase(it);
     }
+    m_actors.clear();
 }
 
 // MARK: Helper Functions
 
 void StudentWorld::setDisplayText() {
-    // Next, create a string from your statistics, of the form:
-    // Score: 0000100 Level: 03 Lives: 3 Health: 70% Ammo: 216 Bonus: 34
     ostringstream oss;
     oss.fill('0');
     oss << "Score: " << setw(7) << getScore() << "  ";
@@ -150,9 +147,7 @@ void StudentWorld::setDisplayText() {
     oss << "Ammo: " << setw(2) << m_player->peas() << "  ";
     oss << "Bonus: " << setw(4) << m_bonus;
 
-    // Finally, update the display text at the top of the screen with your
-    // newly created stats
-    setGameStatText(oss.str()); // calls our provided GameWorld::setGameStatText
+    setGameStatText(oss.str());
 }
 
 void StudentWorld::targetCoords(double& x, double& y, int dir) const {
@@ -213,9 +208,13 @@ void StudentWorld::movePea(Pea* pea) {
     for(auto it = m_actors.begin(); it != m_actors.end(); it++) {
         if((*it)->getX() == x && (*it)->getY() == y) {
             if(!(*it)->peaTransparent()) {
-                (*it)->takeDamage();
                 pea->sethp(0);
                 pea->setVisible(false);
+                // If factory, continue without damaging anything;
+                if((*it)->canSpawn()) {
+                    continue;
+                }
+                (*it)->takeDamage();
                 return;
             }
         }
@@ -227,9 +226,13 @@ void StudentWorld::movePea(Pea* pea) {
     for(auto it = m_actors.begin(); it != m_actors.end(); it++) {
         if((*it)->getX() == x && (*it)->getY() == y) {
             if(!(*it)->peaTransparent()) {
-                (*it)->takeDamage();
                 pea->sethp(0);
                 pea->setVisible(false);
+                // If factory, continue without damaging anything;
+                if((*it)->canSpawn()) {
+                    continue;
+                }
+                (*it)->takeDamage();
                 return;
             }
         }
