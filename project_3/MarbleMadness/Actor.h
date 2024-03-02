@@ -21,13 +21,14 @@ public:
     int hp() const { return m_hp; }
     void sethp(int newhp) { m_hp = newhp; }
 
-    //Atribute Functions
+    // Transparency
     virtual bool playerTransparent() const { return false; }
     virtual bool marbleTransparent() const { return false; }
     virtual bool peaTransparent() const { return false; }
     virtual bool robotTransparent() const { return false; }
+
+    // Attributes
     virtual bool pushable() const { return false; }
-    virtual bool swallowable() const { return false; }
     virtual bool stealable() const { return false; }
     virtual bool canSteal() const { return false; }
     virtual bool canSpawn() const { return false; }
@@ -69,7 +70,6 @@ public:
     : Actor(world, IID_MARBLE, 10, startX, startY, 1) {}
     virtual bool takeDamage() { sethp(hp() - 2); return true; }
     virtual bool pushable() const { return true; }
-    virtual bool swallowable() const { return true; }
 };
 
 class Pea : public Actor {
@@ -183,8 +183,10 @@ public:
 
     int spacedMoved() const { return m_spacesMoved; }
     void setSpacesMoved(int spaces) { m_spacesMoved = spaces; }
+
     int distanceBeforeTurning() const { return m_distanceBeforeTurning; }
     void setDistanceBeforeTurning(int newDist) { m_distanceBeforeTurning = newDist; }
+
     Actor* stolenGoods() { return m_stolenGoods; }
 private:
     bool m_isMean;

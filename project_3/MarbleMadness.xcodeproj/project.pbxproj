@@ -96,7 +96,6 @@
 				4B91F8B02033F3F7003AFA78 /* Actor.h */,
 				4B91F8B22033F3F7003AFA78 /* StudentWorld.cpp */,
 				4B91F8BE2033F3F8003AFA78 /* StudentWorld.h */,
-				CAFCB3A02B80704700D354B4 /* Utilities */,
 			);
 			path = MarbleMadness;
 			sourceTree = "<group>";
@@ -110,7 +109,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		CAFCB3A02B80704700D354B4 /* Utilities */ = {
+		CAFCB3A12B80752A00D354B4 /* Interfaces */ = {
 			isa = PBXGroup;
 			children = (
 				4BDD1225299A1704000721B8 /* Level.h */,
@@ -119,13 +118,6 @@
 				4B91F8BA2033F3F7003AFA78 /* GameController.h */,
 				4B91F8B82033F3F7003AFA78 /* GameController.cpp */,
 				4B91F8B42033F3F7003AFA78 /* main.cpp */,
-			);
-			path = Utilities;
-			sourceTree = "<group>";
-		};
-		CAFCB3A12B80752A00D354B4 /* Interfaces */ = {
-			isa = PBXGroup;
-			children = (
 				4B91F8AF2033F3F7003AFA78 /* GraphObject.h */,
 				4B91F8B52033F3F7003AFA78 /* GameConstants.h */,
 				4B91F8BB2033F3F7003AFA78 /* GameWorld.h */,

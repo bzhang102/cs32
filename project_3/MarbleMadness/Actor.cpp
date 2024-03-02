@@ -66,7 +66,7 @@ void Pit::doSomething() {
 
     // Detect Marble and Swallow
     Actor* actor = world()->actorAtCoords(this, getX(), getY());
-    if(actor != nullptr && actor->swallowable()) {
+    if(actor != nullptr && actor->pushable()) {
         sethp(0);
         actor->sethp(0);
 
@@ -175,15 +175,6 @@ void ThiefBot::doSomething() {
     // calculate number of ticks to wait
     int ticks = (28 - world()->getLevel()) / 4;
     if(ticks < 3) ticks = 3;
-
-    if(world()->curTick() % ticks == 0) {
-        Actor* toSteal = world()->canSteal(this);
-        if(toSteal != nullptr) {
-            steal(toSteal);
-        } else {
-            world()->moveThiefBot(this);
-        }
-    }
 
     if(world()->curTick() % ticks == 0) {
         Actor* toSteal = world()->canSteal(this);

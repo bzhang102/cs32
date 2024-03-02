@@ -1,6 +1,8 @@
 #include "StudentWorld.h"
 #include "GameConstants.h"
+#include "GraphObject.h"
 #include "Actor.h"
+
 #include <iostream>
 #include <string>
 #include <iomanip>
