@@ -78,7 +78,7 @@ int StudentWorld::init() {
                         m_actors.push_back(new Ammo(this, x, y));
                         break;
                     case Level::vert_ragebot:
-                        m_actors.push_back(new RageBot(this, x, y, GraphObject::up));
+                        m_actors.push_back(new RageBot(this, x, y, GraphObject::down));
                         break;
                     case Level::horiz_ragebot:
                         m_actors.push_back(new RageBot(this, x, y, GraphObject::right));
@@ -274,7 +274,7 @@ void StudentWorld::moveRageBot(RageBot* bot) {
 }
 
 void StudentWorld::moveThiefBot(ThiefBot* bot) {
-    if(bot->spacedMoved() >= bot->distanceBeforeTurning()) {
+    if(bot->spacesMoved() >= bot->distanceBeforeTurning()) {
         bot->turn();
         return;
     }
@@ -285,6 +285,7 @@ void StudentWorld::moveThiefBot(ThiefBot* bot) {
 
     if(botCanMoveHere(x, y)) {
         bot->moveTo(x, y);
+        bot->incSpacesMoved();
     } else {
         bot->turn();
     }

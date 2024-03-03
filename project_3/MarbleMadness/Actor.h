@@ -20,6 +20,7 @@ public:
     StudentWorld* world() const { return m_world; }
     int hp() const { return m_hp; }
     void sethp(int newhp) { m_hp = newhp; }
+    virtual void setStolen(bool stolen) {}
 
     // Transparency
     virtual bool playerTransparent() const { return false; }
@@ -119,6 +120,7 @@ public:
     virtual bool robotTransparent() const { return true; }
 
     virtual bool isStolen() const { return m_isStolen; }
+    virtual void setStolen(bool stolen) { m_isStolen = stolen; }
 private:
     virtual void pickUp() = 0;
 
@@ -188,8 +190,8 @@ public:
     void steal(Actor* toSteal);
     void turn();
 
-    int spacedMoved() const { return m_spacesMoved; }
-    void setSpacesMoved(int spaces) { m_spacesMoved = spaces; }
+    int spacesMoved() const { return m_spacesMoved; }
+    void incSpacesMoved() { m_spacesMoved++; }
 
     int distanceBeforeTurning() const { return m_distanceBeforeTurning; }
     void setDistanceBeforeTurning(int newDist) { m_distanceBeforeTurning = newDist; }

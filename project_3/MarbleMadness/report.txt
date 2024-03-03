@@ -63,25 +63,26 @@ Yuxiang Zhang
             b. Sees if there is an actor that is pea-opaque between the bot and the player
 
 2. List of Unimplemented Functionality:
-    N/A, all functionality described by spec implemented
+    N/A, all functionality described by spec implemented (that I know of...) (I hope....)
 
 3. Other Design Choices:
-    Class Structure and Transparency System Used:
-        Actor
-            Wall (Opaque)
-            Player (Opaque)
-            Marble (Opaque)
-            Pea (Transparent)
-            Pit (Pea and Marble Transparent)
-            Exit (Pea, Robot, and Player Transparent)
-            Pickup (Pea, Robot, and Player Transparent)
-                Crystal
-                ExtraLife
-                RestoreHealth
-                Ammo
-            Bot (Robot Transparent to other Bots)
-                RageBot
-                ThiefBot(Mean vs Reg is a boolean)
-            ThiefBotFactory(Mean vs Reg is a boolean) (Opaque)
+    - Class Structure and Transparency System Used:
+            Actor
+                Wall (Opaque)
+                Player (Opaque)
+                Marble (Opaque)
+                Pea (Transparent)
+                Pit (Pea and Marble Transparent)
+                Exit (Pea, Robot, and Player Transparent)
+                Pickup (Pea, Robot, and Player Transparent)
+                    Crystal
+                    ExtraLife
+                    RestoreHealth
+                    Ammo
+                Bot (Robot Transparent to other Bots)
+                    RageBot
+                    ThiefBot(Mean vs Reg is a boolean)
+                ThiefBotFactory(Mean vs Reg is a boolean) (Opaque)
 
-
+    - Random Generation uses std::rand(), then mods the result by the range of the values it wants. For example, to get a random int between 0 and 49, rand() % 50 (to determine whether a factory spawns a new thiefbot).
+    - The mean thiefbots and mean thiefbot factories are not implemented using separate classes, but instead using a boolean m_isMean attribute. This determines the health/image and whether or not a thiefbot can shoot, and the type of thiefbot spawned by the factories. This was done because I thought it would be simpler to have a boolean field than to just create new classes every time we needed a minor difference in behavior (I emailed Carey and he said it was a reasonable choice, and that it was up to me).

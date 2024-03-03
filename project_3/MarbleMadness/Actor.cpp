@@ -85,6 +85,7 @@ void Exit::doSomething() {
     if(world()->crystalsLeft() == 0) {
         setVisible(true);
         m_isOpen = true;
+        world()->playSound(SOUND_REVEAL_EXIT);
     }
 
     if(m_isOpen && world()->player()->getX() == getX() && world()->player()->getY() == getY()) {
@@ -187,8 +188,11 @@ void ThiefBot::doSomething() {
         Actor* toSteal = world()->canSteal(this);
         if(m_isMean && world()->canShootAtPlayer(this)) {
             shoot();
-        } else if(toSteal != nullptr) {
-            steal(toSteal);
+        } else if(toSteal != nullptr && !toSteal->isStolen() && rand() % 10 == 0) {
+            toSteal->setVisible(false);
+            toSteal->setStolen(true);
+            m_stolenGoods = toSteal;
+            world()->playSound(SOUND_ROBOT_MUNCH);
         } else {
             world()->moveThiefBot(this);
         }
@@ -213,19 +217,10 @@ bool ThiefBot::takeDamage() {
         if(stolenGoods() != nullptr) {
             stolenGoods()->moveTo(getX(), getY());
             stolenGoods()->setVisible(true);
+            stolenGoods()->setStolen(false);
         }
     }
     return true;
-}
-
-void ThiefBot::steal(Actor* toSteal) {
-    if(toSteal != nullptr) {
-        if(rand() % 10 == 0) {
-            toSteal->setVisible(false);
-            m_stolenGoods = toSteal;
-            world()->playSound(SOUND_ROBOT_MUNCH);
-        }
-    }
 }
 
 void ThiefBot::turn() {
