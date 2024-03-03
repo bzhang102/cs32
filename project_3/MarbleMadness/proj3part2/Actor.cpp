@@ -26,10 +26,6 @@ void Player::doSomething() {
                 break;
             case KEY_PRESS_SPACE:
                 shoot();
-                return;
-            case KEY_PRESS_ESCAPE:
-                sethp(0);
-                return;
             default:
                 return;
         }

@@ -101,7 +101,6 @@ int StudentWorld::init() {
 
 int StudentWorld::move() {
     setDisplayText();
-
     // tell actors do do something
     for(auto it = m_actors.begin(); !m_levelComplete && it != m_actors.end(); it++) {
         (*it)->doSomething();
@@ -320,7 +319,9 @@ bool StudentWorld::canShootAtPlayer(Bot* bot) const {
             lower = y;
             upper = m_player->getY();
             if(x != m_player->getX() || y > upper) return false;
+            Actor* cur;
             for(auto it = m_actors.begin(); it != m_actors.end(); it++) {
+                cur = *it;
                 if((*it)->getX() == x && (*it)->getY() > lower && (*it)->getY() < upper && !(*it)->peaTransparent()) {
                     return false;
                 }
@@ -331,6 +332,7 @@ bool StudentWorld::canShootAtPlayer(Bot* bot) const {
             upper = y;
             if(x != m_player->getX() || y < lower) return false;
             for(auto it = m_actors.begin(); it != m_actors.end(); it++) {
+                cur = *it;
                 if((*it)->getX() == x && (*it)->getY() > lower && (*it)->getY() < upper && !(*it)->peaTransparent()) {
                     return false;
                 }
