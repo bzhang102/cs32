@@ -192,6 +192,7 @@ public:
 
     int spacesMoved() const { return m_spacesMoved; }
     void incSpacesMoved() { m_spacesMoved++; }
+    void resetSpacesMoved() { m_spacesMoved = 0; }
 
     int distanceBeforeTurning() const { return m_distanceBeforeTurning; }
     void setDistanceBeforeTurning(int newDist) { m_distanceBeforeTurning = newDist; }

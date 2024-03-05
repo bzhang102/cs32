@@ -243,6 +243,8 @@ void ThiefBot::turn() {
 
         index = (index + 1) % 4;
     }
+
+    resetSpacesMoved();
 }
 
 // MARK: ThiefBotFactory
