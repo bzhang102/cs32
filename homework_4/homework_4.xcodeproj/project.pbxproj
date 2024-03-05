@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		CA581C4E2B96B69A00B612A9 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA581C4D2B96B69A00B612A9 /* main.cpp */; };
+		CA581C502B96CCFD00B612A9 /* list.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA581C4F2B96CCFD00B612A9 /* list.cpp */; };
+		CA581C522B96DDA400B612A9 /* sorts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA581C512B96DDA400B612A9 /* sorts.cpp */; };
 		CA7BD8F22B80111200653190 /* oddlist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA7BD8F12B80111200653190 /* oddlist.cpp */; };
 		CA7BD8F42B80162D00653190 /* oddvector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA7BD8F32B80162D00653190 /* oddvector.cpp */; };
 		CA7BD8F62B80188300653190 /* badlist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA7BD8F52B80188300653190 /* badlist.cpp */; };
@@ -29,6 +31,8 @@
 /* Begin PBXFileReference section */
 		CA581C4A2B969D8700B612A9 /* Map.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Map.h; sourceTree = "<group>"; };
 		CA581C4D2B96B69A00B612A9 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		CA581C4F2B96CCFD00B612A9 /* list.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = list.cpp; sourceTree = "<group>"; };
+		CA581C512B96DDA400B612A9 /* sorts.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sorts.cpp; sourceTree = "<group>"; };
 		CA7BD8E72B8010F900653190 /* homework_4 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = homework_4; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA7BD8F12B80111200653190 /* oddlist.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = oddlist.cpp; sourceTree = "<group>"; };
 		CA7BD8F32B80162D00653190 /* oddvector.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = oddvector.cpp; sourceTree = "<group>"; };
@@ -67,12 +71,14 @@
 		CA7BD8E92B8010F900653190 /* homework_4 */ = {
 			isa = PBXGroup;
 			children = (
+				CA7BD8FA2B80397C00653190 /* hw.txt */,
 				CA7BD8F12B80111200653190 /* oddlist.cpp */,
 				CA7BD8F32B80162D00653190 /* oddvector.cpp */,
 				CA7BD8F52B80188300653190 /* badlist.cpp */,
 				CA7BD8F72B80385100653190 /* badvector.cpp */,
-				CA7BD8FA2B80397C00653190 /* hw.txt */,
 				CA581C4A2B969D8700B612A9 /* Map.h */,
+				CA581C4F2B96CCFD00B612A9 /* list.cpp */,
+				CA581C512B96DDA400B612A9 /* sorts.cpp */,
 				CA581C4D2B96B69A00B612A9 /* main.cpp */,
 			);
 			path = homework_4;
@@ -138,8 +144,10 @@
 				CA7BD8F92B80385100653190 /* badvector.cpp in Sources */,
 				CA7BD8F42B80162D00653190 /* oddvector.cpp in Sources */,
 				CA7BD8F62B80188300653190 /* badlist.cpp in Sources */,
+				CA581C522B96DDA400B612A9 /* sorts.cpp in Sources */,
 				CA581C4E2B96B69A00B612A9 /* main.cpp in Sources */,
 				CA7BD8F22B80111200653190 /* oddlist.cpp in Sources */,
+				CA581C502B96CCFD00B612A9 /* list.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
