@@ -269,9 +269,6 @@ void sortUsingPtrs(vector<Sensor>& sensors, bool comp(const Sensor*, const Senso
 
     sort(sensorPtrs.begin(), sensorPtrs.end(), comp);
 
-    // TODO:  Using the now-sorted vector of pointers, replace each Sensor
-    //        in sensors with the Sensors from auxSensors in the correct
-    //        order.
     for(int i = 0; i < sensorPtrs.size(); i++) {
         sensors[i] = *sensorPtrs[i];
     }

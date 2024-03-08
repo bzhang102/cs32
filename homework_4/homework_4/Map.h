@@ -35,15 +35,8 @@ private:
     bool doInsertOrUpdate(const KeyType& key, const ValueType& value, bool mayInsert, bool mayUpdate);
 };
 
-// Declarations of non-member functions
+//  MARK: implementations
 template <typename KeyType, typename ValueType>
-bool merge(const Map<KeyType, ValueType>& m1, const Map<KeyType, ValueType>& m2, Map<KeyType, ValueType>& result);
-
-template <typename KeyType, typename ValueType>
-void reassign(const Map<KeyType, ValueType>& m, Map<KeyType, ValueType>& result);
-
-//  implementations
-template <typename KeyType, typename ValueType> 
 int Map<KeyType, ValueType>::size() const
 {
     return m_size;
