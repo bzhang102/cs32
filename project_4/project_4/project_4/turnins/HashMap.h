@@ -24,18 +24,18 @@ public:
     HashMap(const HashMap&) = delete;
     HashMap& operator=(const HashMap&) = delete;
 private:
-    struct Pair {
-        Pair(const std::string& key, const T& value): m_key(key), m_value(value) {}
+    struct Item {
+        Item(const std::string& key, const T& value): m_key(key), m_value(value) {}
         std::string m_key;
         T m_value;
     };
 
-    std::vector<std::list<Pair*>> m_buckets;
+    std::vector<std::list<Item*>> m_hashTable;
     int m_size;
-    int m_nBuckets;
+    int m_numBuckets;
     double m_maxLoad;
 
-    int hash(const std::string& key) const;
+    int hash(const std::string& key) const { return std::hash<std::string>()(key) % m_numBuckets; }
     void rehash();
 };
 
@@ -44,7 +44,7 @@ private:
 // Constructor
 template <typename T>
 HashMap<T>::HashMap(double max_load)
-: m_buckets(10), m_size(0), m_nBuckets(10) {
+: m_hashTable(10), m_size(0), m_numBuckets(10) {
     // maxLoad sanity check
     m_maxLoad = (max_load > 0) ? max_load : 0.75;
 }
@@ -53,10 +53,10 @@ HashMap<T>::HashMap(double max_load)
 template <typename T>
 HashMap<T>::~HashMap() {
     // for each bucket
-    for(auto bucket : m_buckets) {
+    for(auto bucket : m_hashTable) {
         // for each object in the bucket
-        for(auto pair : bucket) {
-            delete pair;
+        for(auto item : bucket) {
+            delete item;
         }
     }
 }
@@ -69,47 +69,38 @@ void HashMap<T>::insert(const std::string& key, const T& value) {
     if(m_size >= m_maxLoad) { rehash(); }
 
     // add to correct bucket
-    m_buckets[hash(key)].push_back(new Pair(key, value));
+    m_hashTable[hash(key)].push_back(new Item(key, value));
 }
 
 // find()
 template <typename T>
 const T* HashMap<T>::find(const std::string& key) const {
     // iterate through corresponding bucket
-    for(auto obj : *m_buckets[hash(key)]) {
+    for(auto obj : *m_hashTable[hash(key)]) {
         if(obj->m_key == key) {
             return &obj->m_val;
         }
     }
-
     // not found
     return nullptr;
 }
 
 //// MARK: private
 
-// hash()
-template <typename T>
-int HashMap<T>::hash(const std::string& key) const {
-    return std::hash<std::string>()(key) % m_nBuckets;
-}
-
 // rehash()
 template <typename T>
 void HashMap<T>::rehash() {
     // resize to two
-    m_nBuckets *= 2;
+    m_numBuckets *= 2;
     // create new vector of lists with twice the number of buckets
-    std::vector<std::list<Pair*>> newBuckets(m_nBuckets);
-
+    std::vector<std::list<Item*>> newTable(m_numBuckets);
     // move all objects into new vector
-    for(auto bucket : m_buckets) {
+    for(auto bucket : m_hashTable) {
         for(auto obj : bucket) {
-            newBuckets[hash(obj->m_key)].pushback(obj);
+            newTable[hash(obj->m_key)].pushback(obj);
         }
     }
-
     // reassign map's vector
-    m_buckets = newBuckets;
+    m_hashTable = newTable;
 }
 #endif

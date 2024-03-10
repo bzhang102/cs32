@@ -6,6 +6,10 @@
 	objectVersion = 56;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		CA7806552B9DB60800B98FE1 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA7806542B9DB60800B98FE1 /* main.cpp */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		CA386D432B9B7D09009430E5 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -20,8 +24,13 @@
 
 /* Begin PBXFileReference section */
 		CA386D452B9B7D09009430E5 /* project_4 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = project_4; sourceTree = BUILT_PRODUCTS_DIR; };
-		CA386D512B9B7DBA009430E5 /* provided */ = {isa = PBXFileReference; lastKnownFileType = folder; path = provided; sourceTree = "<group>"; };
-		CA386D542B9B7F7C009430E5 /* HashMap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HashMap.h; sourceTree = "<group>"; };
+		CA7806442B9DB3FC00B98FE1 /* HashMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HashMap.h; sourceTree = "<group>"; };
+		CA78064F2B9DB60800B98FE1 /* geopoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = geopoint.h; sourceTree = "<group>"; };
+		CA7806502B9DB60800B98FE1 /* stops.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stops.h; sourceTree = "<group>"; };
+		CA7806512B9DB60800B98FE1 /* tourcmd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tourcmd.h; sourceTree = "<group>"; };
+		CA7806522B9DB60800B98FE1 /* base_classes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base_classes.h; sourceTree = "<group>"; };
+		CA7806532B9DB60800B98FE1 /* geotools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = geotools.h; sourceTree = "<group>"; };
+		CA7806542B9DB60800B98FE1 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,6 +47,7 @@
 		CA386D3C2B9B7D09009430E5 = {
 			isa = PBXGroup;
 			children = (
+				CA78064E2B9DB60800B98FE1 /* provided */,
 				CA386D472B9B7D09009430E5 /* project_4 */,
 				CA386D462B9B7D09009430E5 /* Products */,
 			);
@@ -54,7 +64,6 @@
 		CA386D472B9B7D09009430E5 /* project_4 */ = {
 			isa = PBXGroup;
 			children = (
-				CA386D512B9B7DBA009430E5 /* provided */,
 				CA386D552B9B7F81009430E5 /* turnins */,
 			);
 			path = project_4;
@@ -63,9 +72,23 @@
 		CA386D552B9B7F81009430E5 /* turnins */ = {
 			isa = PBXGroup;
 			children = (
-				CA386D542B9B7F7C009430E5 /* HashMap.h */,
+				CA7806442B9DB3FC00B98FE1 /* HashMap.h */,
 			);
 			path = turnins;
+			sourceTree = "<group>";
+		};
+		CA78064E2B9DB60800B98FE1 /* provided */ = {
+			isa = PBXGroup;
+			children = (
+				CA78064F2B9DB60800B98FE1 /* geopoint.h */,
+				CA7806502B9DB60800B98FE1 /* stops.h */,
+				CA7806512B9DB60800B98FE1 /* tourcmd.h */,
+				CA7806522B9DB60800B98FE1 /* base_classes.h */,
+				CA7806532B9DB60800B98FE1 /* geotools.h */,
+				CA7806542B9DB60800B98FE1 /* main.cpp */,
+			);
+			name = provided;
+			path = project_4/provided;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -125,6 +148,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA7806552B9DB60800B98FE1 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
