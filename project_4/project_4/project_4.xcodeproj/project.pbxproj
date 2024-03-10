@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CA7806552B9DB60800B98FE1 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA7806542B9DB60800B98FE1 /* main.cpp */; };
+		CAE621C12B9E66380061CFCA /* testhashmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CAE621C02B9E66380061CFCA /* testhashmap.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -31,6 +32,7 @@
 		CA7806522B9DB60800B98FE1 /* base_classes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base_classes.h; sourceTree = "<group>"; };
 		CA7806532B9DB60800B98FE1 /* geotools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = geotools.h; sourceTree = "<group>"; };
 		CA7806542B9DB60800B98FE1 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		CAE621C02B9E66380061CFCA /* testhashmap.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = testhashmap.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,7 +49,6 @@
 		CA386D3C2B9B7D09009430E5 = {
 			isa = PBXGroup;
 			children = (
-				CA78064E2B9DB60800B98FE1 /* provided */,
 				CA386D472B9B7D09009430E5 /* project_4 */,
 				CA386D462B9B7D09009430E5 /* Products */,
 			);
@@ -64,6 +65,8 @@
 		CA386D472B9B7D09009430E5 /* project_4 */ = {
 			isa = PBXGroup;
 			children = (
+				CAE621BF2B9E66190061CFCA /* test */,
+				CA78064E2B9DB60800B98FE1 /* provided */,
 				CA386D552B9B7F81009430E5 /* turnins */,
 			);
 			path = project_4;
@@ -87,8 +90,15 @@
 				CA7806532B9DB60800B98FE1 /* geotools.h */,
 				CA7806542B9DB60800B98FE1 /* main.cpp */,
 			);
-			name = provided;
-			path = project_4/provided;
+			path = provided;
+			sourceTree = "<group>";
+		};
+		CAE621BF2B9E66190061CFCA /* test */ = {
+			isa = PBXGroup;
+			children = (
+				CAE621C02B9E66380061CFCA /* testhashmap.cpp */,
+			);
+			path = test;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -148,6 +158,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CAE621C12B9E66380061CFCA /* testhashmap.cpp in Sources */,
 				CA7806552B9DB60800B98FE1 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
