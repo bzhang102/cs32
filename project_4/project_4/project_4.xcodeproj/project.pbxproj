@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		CA7806552B9DB60800B98FE1 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA7806542B9DB60800B98FE1 /* main.cpp */; };
 		CAE621C12B9E66380061CFCA /* testhashmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CAE621C02B9E66380061CFCA /* testhashmap.cpp */; };
+		CAE621C72B9E87680061CFCA /* geodb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CAE621C62B9E87680061CFCA /* geodb.cpp */; };
+		CAE621CF2B9FA0800061CFCA /* testgeodb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CAE621CE2B9FA0800061CFCA /* testgeodb.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -33,6 +35,11 @@
 		CA7806532B9DB60800B98FE1 /* geotools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = geotools.h; sourceTree = "<group>"; };
 		CA7806542B9DB60800B98FE1 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		CAE621C02B9E66380061CFCA /* testhashmap.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = testhashmap.cpp; sourceTree = "<group>"; };
+		CAE621C22B9E76050061CFCA /* geodb.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = geodb.h; sourceTree = "<group>"; };
+		CAE621C62B9E87680061CFCA /* geodb.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = geodb.cpp; sourceTree = "<group>"; };
+		CAE621C82B9E93CB0061CFCA /* mapdata.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = mapdata.txt; sourceTree = "<group>"; };
+		CAE621C92B9ECEE70061CFCA /* support.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = support.h; sourceTree = "<group>"; };
+		CAE621CE2B9FA0800061CFCA /* testgeodb.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = testgeodb.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +83,9 @@
 			isa = PBXGroup;
 			children = (
 				CA7806442B9DB3FC00B98FE1 /* HashMap.h */,
+				CAE621C22B9E76050061CFCA /* geodb.h */,
+				CAE621C92B9ECEE70061CFCA /* support.h */,
+				CAE621C62B9E87680061CFCA /* geodb.cpp */,
 			);
 			path = turnins;
 			sourceTree = "<group>";
@@ -83,6 +93,7 @@
 		CA78064E2B9DB60800B98FE1 /* provided */ = {
 			isa = PBXGroup;
 			children = (
+				CAE621C82B9E93CB0061CFCA /* mapdata.txt */,
 				CA78064F2B9DB60800B98FE1 /* geopoint.h */,
 				CA7806502B9DB60800B98FE1 /* stops.h */,
 				CA7806512B9DB60800B98FE1 /* tourcmd.h */,
@@ -97,6 +108,7 @@
 			isa = PBXGroup;
 			children = (
 				CAE621C02B9E66380061CFCA /* testhashmap.cpp */,
+				CAE621CE2B9FA0800061CFCA /* testgeodb.cpp */,
 			);
 			path = test;
 			sourceTree = "<group>";
@@ -159,7 +171,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				CAE621C12B9E66380061CFCA /* testhashmap.cpp in Sources */,
+				CAE621C72B9E87680061CFCA /* geodb.cpp in Sources */,
 				CA7806552B9DB60800B98FE1 /* main.cpp in Sources */,
+				CAE621CF2B9FA0800061CFCA /* testgeodb.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
