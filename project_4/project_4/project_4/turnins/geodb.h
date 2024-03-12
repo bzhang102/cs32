@@ -4,7 +4,6 @@
 #include "base_classes.h"
 #include "geopoint.h"
 #include "HashMap.h"
-#include "support.h"
 
 class GeoDatabase: public GeoDatabaseBase {
 public:
@@ -16,7 +15,12 @@ public:
     virtual std::string get_street_name(const GeoPoint& pt1, const GeoPoint& pt2) const;
 private:
     HashMap<GeoPoint> poiToPoint;
-    HashMap<std::vector<StreetSegment>> pointToSegments;
+    HashMap<std::vector<GeoPoint>> pointToPoints;
+    HashMap<std::string> pointsToName;
+
     void associate(std::string name, const GeoPoint& pt1, const GeoPoint& pt2);
+    bool comp(const GeoPoint& pt1, const GeoPoint& pt2) {
+        return pt1.to_string() == pt2.to_string();
+    }
 };
 #endif
