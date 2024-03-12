@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CA62D0302BA0461000AD45D3 /* testrouter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA62D02F2BA0461000AD45D3 /* testrouter.cpp */; };
+		CA62D0322BA0469500AD45D3 /* router.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA62D0312BA0469500AD45D3 /* router.cpp */; };
 		CA7806552B9DB60800B98FE1 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA7806542B9DB60800B98FE1 /* main.cpp */; };
 		CAE621C12B9E66380061CFCA /* testhashmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CAE621C02B9E66380061CFCA /* testhashmap.cpp */; };
 		CAE621C72B9E87680061CFCA /* geodb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CAE621C62B9E87680061CFCA /* geodb.cpp */; };
@@ -27,6 +29,9 @@
 
 /* Begin PBXFileReference section */
 		CA386D452B9B7D09009430E5 /* project_4 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = project_4; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA62D02E2BA045D400AD45D3 /* router.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = router.h; sourceTree = "<group>"; };
+		CA62D02F2BA0461000AD45D3 /* testrouter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = testrouter.cpp; sourceTree = "<group>"; };
+		CA62D0312BA0469500AD45D3 /* router.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = router.cpp; sourceTree = "<group>"; };
 		CA7806442B9DB3FC00B98FE1 /* HashMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HashMap.h; sourceTree = "<group>"; };
 		CA78064F2B9DB60800B98FE1 /* geopoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = geopoint.h; sourceTree = "<group>"; };
 		CA7806502B9DB60800B98FE1 /* stops.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stops.h; sourceTree = "<group>"; };
@@ -84,6 +89,8 @@
 				CA7806442B9DB3FC00B98FE1 /* HashMap.h */,
 				CAE621C22B9E76050061CFCA /* geodb.h */,
 				CAE621C62B9E87680061CFCA /* geodb.cpp */,
+				CA62D02E2BA045D400AD45D3 /* router.h */,
+				CA62D0312BA0469500AD45D3 /* router.cpp */,
 			);
 			path = turnins;
 			sourceTree = "<group>";
@@ -107,6 +114,7 @@
 			children = (
 				CAE621C02B9E66380061CFCA /* testhashmap.cpp */,
 				CAE621CE2B9FA0800061CFCA /* testgeodb.cpp */,
+				CA62D02F2BA0461000AD45D3 /* testrouter.cpp */,
 			);
 			path = test;
 			sourceTree = "<group>";
@@ -172,6 +180,8 @@
 				CAE621C72B9E87680061CFCA /* geodb.cpp in Sources */,
 				CA7806552B9DB60800B98FE1 /* main.cpp in Sources */,
 				CAE621CF2B9FA0800061CFCA /* testgeodb.cpp in Sources */,
+				CA62D0322BA0469500AD45D3 /* router.cpp in Sources */,
+				CA62D0302BA0461000AD45D3 /* testrouter.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

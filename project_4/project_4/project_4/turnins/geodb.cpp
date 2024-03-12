@@ -18,17 +18,16 @@ bool GeoDatabase::load(const string& map_data_file) {
         string street;
         string line;
         string lat1, lon1, lat2, lon2;
-
         // get street segment data
         if(!getline(infile, street)) { break; }
         if(!getline(infile, line)) { break; }
         istringstream iss(line);
         iss >> lat1 >> lon1 >> lat2 >> lon2;
-
         // make endpoints
         GeoPoint p1(lat1, lon1);
         GeoPoint p2(lat2, lon2);
-
+        // make new street segment connecting both points (bidirectional)
+        associate(street, p1, p2);
         // handle any pois
         int pois;
         if(!(infile >> pois)) { break; }
@@ -38,12 +37,10 @@ bool GeoDatabase::load(const string& map_data_file) {
             GeoPoint mid = midpoint(p1, p2);
             associate(street, p1, mid);
             associate(street, p2, mid);
-
             // load each poi
             for(int i = 0; i < pois; i++) {
                 string name;
                 string lat, lon;
-
                 // get poi data
                 getline(infile, line);
                 name = line.substr(0, line.find('|'));
@@ -51,23 +48,15 @@ bool GeoDatabase::load(const string& map_data_file) {
                 lat = line.substr(0, line.find(' '));
                 line.erase(0, lat1.size() + 1);
                 lon = line;
-
                 // make new geopoint representing poi
                 GeoPoint poi(lat, lon);
-
                 // associate poi with geopoint
                 poiToPoint.insert(name, poi);
-
                 // make new street segment connecting midpoint with
                 associate("a path", poi, mid);
             }
-        // no pois
-        } else {
-            // make new street segment connecting both points (bidirectional)
-            associate(street, p1, p2);
         }
     }
-
     return true;
 }
 
@@ -90,36 +79,8 @@ string GeoDatabase::get_street_name(const GeoPoint& pt1, const GeoPoint& pt2) co
 
 void GeoDatabase::associate(string name, const GeoPoint &pt1, const GeoPoint &pt2) {
     // get points associated with pt1
-    vector<GeoPoint>* points1 = pointToPoints.find(pt1.to_string());
-    // pt1 exists in pointsToPoints
-    if(points1 != nullptr) {
-        // check if pt2 already exists within
-        for(auto it = points1->begin(); it != points1->end(); it++) {
-            if(comp(pt2, *it)) return;
-        }
-        points1->push_back(pt2);
-    // pt1 doesn't exist in pointsToPoints
-    } else {
-        vector<GeoPoint> newVec;
-        newVec.push_back(pt2);
-        pointToPoints.insert(pt1.to_string(), newVec);
-    }
-
-    // get points associated with pt2
-    vector<GeoPoint>* points2 = pointToPoints.find(pt2.to_string());
-    // pt2 exists in pointsToPoints
-    if(points2 != nullptr) {
-        // check if pt1 already exists within
-        for(auto it = points2->begin(); it != points2->end(); it++) {
-            if(comp(pt1, *it)) return;
-        }
-        points2->push_back(pt1);
-        // pt2 doesn't exist in pointsToPoints
-    } else {
-        vector<GeoPoint> newVec;
-        newVec.push_back(pt1);
-        pointToPoints.insert(pt2.to_string(), newVec);
-    }
+    pointToPoints[pt1.to_string()].push_back(pt2);
+    pointToPoints[pt2.to_string()].push_back(pt1);
 
     pointsToName.insert(pt1.to_string() + "|" + pt2.to_string(), name);
     pointsToName.insert(pt2.to_string() + "|" + pt1.to_string(), name);
