@@ -1,0 +1,80 @@
+Yuxiang Zhang
+206142605
+
+1.
+	a.
+				     50
+
+                      20                            60
+
+             10                 40                            70
+
+                 15         30                            66      80
+
+                           25 38                                75
+	
+	b. Preorder:  50, 20, 10, 15, 40, 30, 25, 38, 60, 70, 66, 80, 75
+	   Inorder:   10, 15, 20, 25, 30, 28, 40, 50, 60, 66, 70, 75, 80
+	   PostOrder: 15, 10, 25, 38, 30, 40, 20, 66, 75, 80, 70, 60, 50
+
+	c. (using largest in-order successor from subtree)
+
+				     50
+
+                      25                            60
+
+             10                 40                            70
+
+                 15         38                            66      80
+
+                                                            75
+
+2.
+	a. 
+	
+	struct Node {
+		int val;
+		Node* parent;
+		Node* left;
+		Node* right;
+	};
+
+	b.
+	
+	set current to root
+	set prev to nullptr
+	while the current node isn't null, iteratively:
+		set prev to current
+		if value is greater than to current node's value
+			set current to current's right
+		else if value is less than current node's value
+			set current to current's left
+		else
+			return without doing anything
+	set current equal to a new node with parent equal to prev and val equal to value
+
+3. 
+	a.
+				     7
+
+                      5                             6
+
+             3                 1           4
+	
+	b. [7, 5, 6, 3, 1, 4]
+	
+	c. [6, 5, 4, 3, 1]
+
+4.
+	a. O(C + S)
+	b. O(log(C) + S)
+	c. O(log(C) + log(S)) = O(log(C * S))
+	d. O(log(S))
+	e. O(1)
+	f. O(log(C) + S)
+	g. O(S * log(S))
+	h. O(C * log(S))
+
+
+
+

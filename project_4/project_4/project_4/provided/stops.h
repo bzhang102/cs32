@@ -29,7 +29,7 @@ public:
         return true;
     }
 
-    int size() const { return poi_data_.size(); }
+    int size() const { return static_cast<int>(poi_data_.size()); }
 
     bool get_poi_data(int index, std::string& poi, std::string& talking_points) const
     {
