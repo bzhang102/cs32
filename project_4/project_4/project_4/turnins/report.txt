@@ -1,0 +1,22 @@
+Yuxiang Zhang
+206142605
+
+Big-O Complexity Analyses:
+    N is the number of GeoPoints
+    S is the number of street segments
+    I is the average number of pois per street segment
+
+    GeoDatabase:
+        load():
+            - O(S * I), with the understanding that it could be worse in the case of vector resizing
+        get_connected_points():
+            - O(1), with the understanding that it could be as bad as O(N) with hash collisions
+        get_street_name():
+            - O(1), with the understanding that it could be as bad as O(N) with hash collisions
+    Router:
+        route():
+            A* Algorithm used:
+            - Priority Queue (backed by a Vector) that keeps track of the 'frontier' of Geopoints
+            - HashMap mapping a geopoint to the previous geopoint in the route
+            - HashMap mapping a geopoint to its 'cost'
+            - Vector to hold resulting route

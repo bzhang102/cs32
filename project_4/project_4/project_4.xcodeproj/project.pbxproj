@@ -29,6 +29,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		CA2722FA2BA3A0C7003CC260 /* report.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = report.txt; sourceTree = "<group>"; };
 		CA386D452B9B7D09009430E5 /* project_4 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = project_4; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA62D02E2BA045D400AD45D3 /* router.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = router.h; sourceTree = "<group>"; };
 		CA62D02F2BA0461000AD45D3 /* testrouter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = testrouter.cpp; sourceTree = "<group>"; };
@@ -91,6 +92,7 @@
 		CA386D552B9B7F81009430E5 /* turnins */ = {
 			isa = PBXGroup;
 			children = (
+				CA2722FA2BA3A0C7003CC260 /* report.txt */,
 				CAE621C22B9E76050061CFCA /* geodb.h */,
 				CAE621C62B9E87680061CFCA /* geodb.cpp */,
 				CA62D02E2BA045D400AD45D3 /* router.h */,

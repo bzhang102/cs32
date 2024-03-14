@@ -3,6 +3,7 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include <cassert>
 
 #include "geodb.h"
 #include "router.h"

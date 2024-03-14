@@ -5,7 +5,7 @@
 //
 //int main() {
 //    GeoDatabase geodb;
-//    geodb.load("/Users/brandon/IDEs/XCode/cs_32/project_4/project_4/project_4/provided/mapdata.txt");
+//    geodb.load("/Users/brandon/IDEs/XCode/cs_32/project_4/project_4/project_4/test/mapdata.txt");
 //
 //    GeoPoint p;
 //    if (geodb.get_poi_location("Diddy Riese", p))
