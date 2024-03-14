@@ -3,7 +3,7 @@
 
 #include "base_classes.h"
 #include "geopoint.h"
-#include "HashMap.h"
+#include "hashmap.h"
 
 class GeoDatabase: public GeoDatabaseBase {
 public:

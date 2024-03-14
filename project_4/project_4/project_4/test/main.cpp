@@ -9,7 +9,7 @@
 #include "stops.h"
 #include "tourcmd.h"
 #include "tour_generator.h"
-#include "HashMap.h"
+#include "hashmap.h"
 
 using namespace std;
 

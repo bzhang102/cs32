@@ -64,7 +64,7 @@ void HashMap<T>::insert(const std::string& key, const T& value) {
 
 // operator[]()
 template <typename T>
-T& HashMap<T>::operator[](const std::string& key) { 
+T& HashMap<T>::operator[](const std::string& key) {
     // if doesn't exist, insert default value
     if(find(key) == nullptr) insert(key, T());
     return *find(key);

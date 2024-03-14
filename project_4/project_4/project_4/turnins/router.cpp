@@ -1,7 +1,7 @@
 #include "router.h"
 #include "geopoint.h"
 #include "geotools.h"
-#include "HashMap.h"
+#include "hashmap.h"
 
 #include <vector>
 #include <queue>

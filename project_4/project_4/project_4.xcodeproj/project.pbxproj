@@ -33,7 +33,6 @@
 		CA62D02E2BA045D400AD45D3 /* router.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = router.h; sourceTree = "<group>"; };
 		CA62D02F2BA0461000AD45D3 /* testrouter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = testrouter.cpp; sourceTree = "<group>"; };
 		CA62D0312BA0469500AD45D3 /* router.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = router.cpp; sourceTree = "<group>"; };
-		CA7806442B9DB3FC00B98FE1 /* HashMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HashMap.h; sourceTree = "<group>"; };
 		CA78064F2B9DB60800B98FE1 /* geopoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = geopoint.h; sourceTree = "<group>"; };
 		CA7806502B9DB60800B98FE1 /* stops.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stops.h; sourceTree = "<group>"; };
 		CA7806512B9DB60800B98FE1 /* tourcmd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tourcmd.h; sourceTree = "<group>"; };
@@ -44,6 +43,7 @@
 		CA9FA7702BA18AF300500363 /* tour_generator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tour_generator.h; sourceTree = "<group>"; };
 		CAA781DF2BA2415B00942AFB /* stops.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = stops.txt; sourceTree = "<group>"; };
 		CAA781E02BA2415B00942AFB /* Route.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Route.txt; sourceTree = "<group>"; };
+		CAC6B9092BA2F7DC0016EE1E /* hashmap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = hashmap.h; sourceTree = "<group>"; };
 		CAE621C02B9E66380061CFCA /* testhashmap.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = testhashmap.cpp; sourceTree = "<group>"; };
 		CAE621C22B9E76050061CFCA /* geodb.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = geodb.h; sourceTree = "<group>"; };
 		CAE621C62B9E87680061CFCA /* geodb.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = geodb.cpp; sourceTree = "<group>"; };
@@ -91,11 +91,11 @@
 		CA386D552B9B7F81009430E5 /* turnins */ = {
 			isa = PBXGroup;
 			children = (
-				CA7806442B9DB3FC00B98FE1 /* HashMap.h */,
 				CAE621C22B9E76050061CFCA /* geodb.h */,
 				CAE621C62B9E87680061CFCA /* geodb.cpp */,
 				CA62D02E2BA045D400AD45D3 /* router.h */,
 				CA62D0312BA0469500AD45D3 /* router.cpp */,
+				CAC6B9092BA2F7DC0016EE1E /* hashmap.h */,
 				CA9FA7702BA18AF300500363 /* tour_generator.h */,
 				CA9FA76E2BA18AE500500363 /* tour_generator.cpp */,
 			);
