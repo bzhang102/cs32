@@ -11,12 +11,13 @@
 class TourGenerator: public TourGeneratorBase
 {
 public:
-    TourGenerator(const GeoDatabaseBase& geodb, const RouterBase& router) : m_router(&router), m_db(&geodb) {}
+    TourGenerator(const GeoDatabaseBase& geodb, const RouterBase& router) : m_router(router), m_db(geodb) {}
     virtual ~TourGenerator() = default;
     virtual std::vector<TourCommand> generate_tour(const Stops& stops) const;
 private:
-    const RouterBase* m_router;
-    const GeoDatabaseBase* m_db;
+    const RouterBase& m_router;
+    const GeoDatabaseBase& m_db;
+    
     std::string getDirection(const GeoPoint& pt1, const GeoPoint& pt2) const;
 };
 #endif

@@ -56,7 +56,7 @@
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "/Users/brandon/IDEs/XCode/cs_32/project_4/project_4/project_4/provided/stops.txt"
+            argument = "/Users/brandon/IDEs/XCode/cs_32/project_4/project_4/project_4/test/stops.txt"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
