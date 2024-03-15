@@ -4,14 +4,13 @@ Yuxiang Zhang
 Big-O Complexity Analyses:
     N is the number of GeoPoints
     S is the number of street segments
-    I is the number of pois
-    P is the average number of streets segments each Geopoint is connected to
+    P is the number of pois
 
     GeoDatabase:
         load():
-            - O(I + S), with the understanding that it could be worse in the case of vector resizing
+            - O(P + S), with the understanding that it could be worse in the case of vector resizing
         get_connected_points():
-            - O(P), with the understanding that it could be as bad as O(N + K) with hash collisions
+            - O(1), with the understanding that it could be as bad as O(N) with hash collisions
         get_street_name():
             - O(1), with the understanding that it could be as bad as O(N) with hash collisions
     Router:
