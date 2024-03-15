@@ -22,7 +22,7 @@ class CompareGeoPoint {
 public:
     CompareGeoPoint(const HashMap<double>& cost, const GeoPoint& end) : m_cost(cost), m_end(end) {}
     bool operator()(const GeoPoint& pt1, const GeoPoint& pt2) {
-        return *m_cost.find(pt1.to_string()) + distance_earth_miles(pt1, m_end) > *m_cost.find(pt2.to_string()) + distance_earth_miles(pt1, m_end);
+        return *m_cost.find(pt1.to_string()) + distance_earth_miles(pt1, m_end) > *m_cost.find(pt2.to_string()) + distance_earth_miles(pt2, m_end);
     }
 private:
     const HashMap<double>& m_cost;
