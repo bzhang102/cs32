@@ -82,7 +82,9 @@ string TourGenerator::getDirection(const GeoPoint& pt1, const GeoPoint& pt2) con
         return "southwest";
     } else if(angle < 292.5) {
         return "south";
-    } else {
+    } else if(angle < 337.5) {
         return "southeast";
+    } else {
+        return "east";
     }
 }
