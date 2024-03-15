@@ -54,14 +54,14 @@ vector<GeoPoint> Router::route(const GeoPoint& pt1, const GeoPoint& pt2) const {
     vector<GeoPoint> route;
     // if route exists, return route in reverse order
     if(cameFrom.find(pt2.to_string()) != nullptr) {
-        makeRoute(pt2.to_string(), cameFrom, route);
+        makeRoute(pt2.to_string(), 0, cameFrom, route);
     }
     return route;
 }
 
 // recursively add waypoints to route starting from the end (map gives points in reverse order)
-void Router::makeRoute(const string& cur, const HashMap<string>& map, vector<GeoPoint>& route) const {
+void Router::makeRoute(const string& cur, int size, const HashMap<string>& map, vector<GeoPoint>& route) const {
     if(cur == "") return;
-    makeRoute(*map.find(cur), map, route);
+    makeRoute(*map.find(cur), size + 1, map, route);
     route.push_back(GeoPoint(cur.substr(0, cur.find(',')), cur.substr(cur.find(',') + 1)));
 }

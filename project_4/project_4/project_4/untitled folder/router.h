@@ -15,7 +15,7 @@ public:
     virtual std::vector<GeoPoint> route(const GeoPoint& pt1, const GeoPoint& pt2) const;
 private:
     const GeoDatabaseBase& m_db;
-    void makeRoute(const std::string& cur, const HashMap<std::string>& map, std::vector<GeoPoint>& route) const;
+    void makeRoute(const std::string& cur, int size, const HashMap<std::string>& map, std::vector<GeoPoint>& route) const;
 };
 
 class CompareGeoPoint {

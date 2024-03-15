@@ -40,18 +40,18 @@ Yuxiang Zhang
 	};
 
 	b.
-	
-	set current to root
-	set prev to nullptr
-	while the current node isn't null, iteratively:
-		set prev to current
-		if value is greater than to current node's value
-			set current to current's right
-		else if value is less than current node's value
-			set current to current's left
-		else
-			return without doing anything
-	set current equal to a new node with parent equal to prev and val equal to value
+	void insert(Node* root, int value):
+		set current to root
+		set prev to nullptr
+		while the current node isn't null:
+			set prev to current
+			if value is greater than to current node's value
+				set current to current's right
+			else if value is less than current node's value
+				set current to current's left
+			else
+				return without doing anything
+		set current equal to a new node with parent equal to prev and val equal to value
 
 3. 
 	a.
